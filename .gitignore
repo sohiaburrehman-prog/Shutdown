@@ -1,0 +1,33 @@
+# Build outputs
+bin/
+obj/
+publish/
+AppPackages/
+Installer/
+
+# MSIX packages
+*.msix
+*.msixbundle
+*.msixupload
+*.appx
+*.appxbundle
+
+# Portable zip
+*.zip
+
+# Certificates (NEVER commit private keys)
+certs/
+*.pfx
+*.cer
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store

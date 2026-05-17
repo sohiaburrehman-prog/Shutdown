@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+    <WindowsSdkPackageVersion>10.0.22621.52</WindowsSdkPackageVersion>
+    <RootNamespace>ShutdownTimer</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64;ARM64</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+
+    <!-- MSIX Packaging — switch between unpackaged (dev) and MSIX (release) -->
+    <!-- For dev/debug: set to None. For MSIX packaging: remove or comment out this line -->
+    <WindowsPackageType>None</WindowsPackageType>
+
+    <!-- Version -->
+    <Version>1.4.0.0</Version>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <FileVersion>1.4.0.0</FileVersion>
+
+    <!-- App info -->
+    <Product>Shutdown Timer Advanced</Product>
+    <Company>Sohiab</Company>
+    <Authors>Sohiab</Authors>
+    <Description>A modern Windows power management timer with countdown, process monitoring, idle detection, and scheduling.</Description>
+    <Copyright>Copyright © 2026 Sohiab. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <!-- Exclude the test project from the main project's compilation glob -->
+  <ItemGroup>
+    <Compile Remove="ShutdownTimer.Tests\**" />
+    <None Remove="ShutdownTimer.Tests\**" />
+    <EmbeddedResource Remove="ShutdownTimer.Tests\**" />
+    <Page Remove="ShutdownTimer.Tests\**" />
+  </ItemGroup>
+
+  <!-- Resource files -->
+  <ItemGroup>
+    <Content Include="Resources\app.ico" />
+    <Content Include="Resources\logo48.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Resources\TrayIcons\tray.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Resources\TrayIcons\tray.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Legal documents -->
+  <ItemGroup>
+    <None Include="Docs\PRIVACY.md" CopyToOutputDirectory="PreserveNewest" Link="PRIVACY.md" />
+    <None Include="Docs\EULA.md" CopyToOutputDirectory="PreserveNewest" Link="EULA.md" />
+  </ItemGroup>
+
+  <!-- MSIX visual assets -->
+  <ItemGroup>
+    <Content Include="Assets\**\*.png" />
+  </ItemGroup>
+
+  <!-- NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.2.0" />
+    <PackageReference Include="NCrontab" Version="3.3.3" />
+  </ItemGroup>
+</Project>

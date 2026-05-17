@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.ProcessMonitorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ShutdownTimer.Models"
+    Background="Transparent">
+
+    <Grid Padding="22,16,22,14" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Page Title -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Spacing="2">
+                <TextBlock Text="PROCESS WATCHER" Style="{StaticResource PageEyebrow}" />
+                <TextBlock Text="Act when work finishes or starts" Style="{StaticResource PageHeading}" />
+                <TextBlock Text="Monitor a game, render, backup, or downloader and run a power action at the right moment."
+                           Style="{StaticResource PageDescription}" />
+            </StackPanel>
+            <Button Grid.Column="1" Style="{StaticResource HelpInfoButton}" VerticalAlignment="Top">
+                <FontIcon Glyph="&#xE897;" FontSize="16" />
+                <Button.Flyout>
+                    <Flyout Placement="BottomEdgeAlignedRight">
+                        <StackPanel Spacing="8" MaxWidth="300">
+                            <TextBlock Text="Process Monitor Help" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                       Text="Select a running app and choose 'When process exits' to trigger an action when it closes. Or choose 'When process starts' and type a process name to wait for it to launch." />
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource AccentWarmBrush}" FontSize="12"
+                                       Text="Tip: Great for shutting down after a game, render, or download finishes." />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+
+        <!-- Search + Refresh + Mode -->
+        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="12">
+            <StackPanel Spacing="8">
+                <Border Style="{StaticResource PreviewPanel}" HorizontalAlignment="Stretch">
+                    <TextBlock Text="{x:Bind ViewModel.MonitorPreview, Mode=OneWay}"
+                               Foreground="{StaticResource AccentGlowBrush}" TextWrapping="Wrap" />
+                </Border>
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBox PlaceholderText="Search processes..."
+                             Text="{x:Bind ViewModel.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Width="250" />
+                    <Button Content="Refresh" Command="{x:Bind ViewModel.RefreshProcessesCommand}"
+                            Style="{StaticResource SubtleButton}" />
+                    <ComboBox Header="" Width="200"
+                              ItemsSource="{x:Bind ViewModel.MonitorModes}"
+                              SelectedIndex="{x:Bind ViewModel.MonitorModeIndex, Mode=TwoWay}" />
+                </StackPanel>
+                <!-- Process name input for "Wait for start" mode -->
+                <TextBox PlaceholderText="Enter process name to watch for (e.g. notepad)..."
+                         Text="{x:Bind ViewModel.WaitForProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Width="500" HorizontalAlignment="Left"
+                         Visibility="{x:Bind ViewModel.MonitorModeIndex, Mode=OneWay, Converter={StaticResource IndexToVisibility}}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Process list -->
+        <Border Grid.Row="2" Style="{StaticResource GlassCard}" Padding="0">
+            <Grid>
+                <!-- Empty state message -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Spacing="8" Padding="24"
+                            Visibility="{x:Bind ViewModel.IsProcessListEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <FontIcon Glyph="&#xE773;" FontSize="32" Foreground="{ThemeResource DimForeground}"
+                              HorizontalAlignment="Center" />
+                    <TextBlock Text="No processes found" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{ThemeResource SubtleForeground}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Click Refresh to load running applications"
+                               FontSize="12" Foreground="{ThemeResource DimForeground}"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+
+                <ListView ItemsSource="{x:Bind ViewModel.Processes, Mode=OneWay}"
+                          SelectedItem="{x:Bind ViewModel.SelectedProcess, Mode=TwoWay}"
+                          SelectionMode="Single"
+                          Background="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProcessInfo">
+                            <Grid Padding="16,10" ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{x:Bind ProcessName}" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                                    <TextBlock Text="{x:Bind MainWindowTitle}" FontSize="12"
+                                               Foreground="{ThemeResource SubtleForeground}"
+                                               TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{x:Bind ResourceDisplay}"
+                                           FontSize="11" Foreground="{StaticResource AccentGlowDimBrush}"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="2" Text="{x:Bind ProcessId}"
+                                           FontSize="11" Foreground="{ThemeResource DimForeground}"
+                                           VerticalAlignment="Center" FontFamily="Consolas" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
+
+        <!-- Controls -->
+        <Border Grid.Row="3" Style="{StaticResource GlassCard}">
+            <StackPanel Spacing="8">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <ComboBox Header="Action" Width="150"
+                              ItemsSource="{x:Bind ViewModel.AvailableActions}"
+                              SelectedItem="{x:Bind ViewModel.SelectedAction, Mode=TwoWay}" />
+                    <Button Content="Start Monitoring" Command="{x:Bind ViewModel.StartMonitoringCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsMonitoring, Mode=OneWay, Converter={StaticResource InverseBool}}"
+                            Style="{StaticResource GlowAccentButton}" VerticalAlignment="Bottom" />
+                    <Button Content="Stop" Command="{x:Bind ViewModel.StopMonitoringCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsMonitoring, Mode=OneWay}"
+                            Style="{StaticResource DangerButton}" VerticalAlignment="Bottom" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                               FontSize="13" Foreground="{ThemeResource SubtleForeground}" />
+                    <TextBlock Text="{x:Bind ViewModel.ElapsedText, Mode=OneWay}"
+                               FontSize="12" Foreground="{ThemeResource DimForeground}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

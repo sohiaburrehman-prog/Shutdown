@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.CountdownTimerPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ShutdownTimer.Models"
+    Background="Transparent">
+
+    <ScrollViewer Padding="22,16,22,14">
+        <StackPanel Spacing="12">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Spacing="2">
+                    <TextBlock Text="GUIDED COUNTDOWN" Style="{StaticResource PageEyebrow}" />
+                    <TextBlock Text="Create a one-time power action" Style="{StaticResource PageHeading}" />
+                    <TextBlock Text="Pick a preset or exact duration, choose the action, then start with a clear preview."
+                               Style="{StaticResource PageDescription}" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{StaticResource HelpInfoButton}" VerticalAlignment="Top">
+                    <FontIcon Glyph="&#xE897;" FontSize="16" />
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedRight">
+                            <StackPanel Spacing="8" MaxWidth="300">
+                                <TextBlock Text="Countdown Timer Help" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                           Text="Set hours, minutes, and seconds, then pick an action (Shutdown, Restart, Sleep, Hibernate, Log Off, or Lock). Click Start to begin." />
+                                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                           Text="You can Pause and Resume the timer at any time. Cancel resets it completely. The progress bar shows how much time has elapsed." />
+                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource AccentWarmBrush}" FontSize="12"
+                                           Text="Tip: Customize quick presets in Settings. Save your work before starting." />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+
+            <Grid ColumnSpacing="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.35*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Spacing="12">
+                    <Border x:Name="TimerCard" Style="{StaticResource HeroCard}">
+                        <StackPanel Spacing="8">
+                            <Border Style="{StaticResource StatusPill}" HorizontalAlignment="Left">
+                                <TextBlock Text="{x:Bind ViewModel.RunningSummary, Mode=OneWay}"
+                                           Foreground="{StaticResource AccentGlowBrush}" FontSize="12" FontWeight="SemiBold" />
+                            </Border>
+                            <TextBlock x:Name="TimerDisplayText"
+                                       Text="{x:Bind ViewModel.RemainingDisplay, Mode=OneWay}"
+                                       Style="{StaticResource TimerDisplay}" FontSize="46" HorizontalAlignment="Left" />
+                            <ProgressBar Value="{x:Bind ViewModel.ProgressPercent, Mode=OneWay}"
+                                         Maximum="100" Height="6" CornerRadius="3"
+                                         Foreground="{StaticResource AccentGlowBrush}"
+                                         Background="{ThemeResource CardBorderBrush}" />
+                            <TextBlock Text="{x:Bind ViewModel.ActionPreview, Mode=OneWay}"
+                                       Style="{StaticResource PageDescription}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource GlassCard}">
+                        <StackPanel Spacing="9">
+                            <TextBlock Text="USE CASES" Style="{StaticResource SectionTitle}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="Movie night" Command="{x:Bind ViewModel.UseMovieNightTemplateCommand}"
+                                        Style="{StaticResource SubtleButton}" />
+                                <Button Content="Restart after updates" Command="{x:Bind ViewModel.UseUpdateRestartTemplateCommand}"
+                                        Style="{StaticResource SubtleButton}" />
+                                <Button Content="Long download" Command="{x:Bind ViewModel.UseLongDownloadTemplateCommand}"
+                                        Style="{StaticResource SubtleButton}" />
+                            </StackPanel>
+                            <TextBlock Text="1. PICK A DURATION" Style="{StaticResource SectionTitle}" />
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.QuickPresets, Mode=OneWay}">
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Orientation="Horizontal" Spacing="8" />
+                                </ItemsRepeater.Layout>
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="models:PresetEntry">
+                                        <Button Content="{x:Bind Label}"
+                                                Command="{Binding ElementName=PageRoot, Path=ViewModel.SetPresetCommand}"
+                                                CommandParameter="{x:Bind}"
+                                                Style="{StaticResource SubtleButton}" Padding="12,7" />
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                            <Button Content="4 hours" Command="{x:Bind ViewModel.Set4HourPresetCommand}"
+                                    Style="{StaticResource SubtleButton}" HorizontalAlignment="Left" />
+
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <NumberBox Grid.Column="0" Header="Hours" Value="{x:Bind ViewModel.Hours, Mode=TwoWay}"
+                                           Minimum="0" Maximum="99" SpinButtonPlacementMode="Compact" />
+                                <NumberBox Grid.Column="1" Header="Minutes" Value="{x:Bind ViewModel.Minutes, Mode=TwoWay}"
+                                           Minimum="0" Maximum="59" SpinButtonPlacementMode="Compact" />
+                                <NumberBox Grid.Column="2" Header="Seconds" Value="{x:Bind ViewModel.Seconds, Mode=TwoWay}"
+                                           Minimum="0" Maximum="59" SpinButtonPlacementMode="Compact" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="12">
+                    <Border Style="{StaticResource GlassCard}">
+                        <StackPanel Spacing="9">
+                            <TextBlock Text="2. CHOOSE THE ACTION" Style="{StaticResource SectionTitle}" />
+                            <ComboBox Header="Power action" MinWidth="220"
+                                      ItemsSource="{x:Bind ViewModel.AvailableActions}"
+                                      SelectedItem="{x:Bind ViewModel.SelectedAction, Mode=TwoWay}" />
+                            <Border Style="{StaticResource PreviewPanel}" HorizontalAlignment="Stretch">
+                                <TextBlock Text="{x:Bind ViewModel.ActionPreview, Mode=OneWay}"
+                                           TextWrapping="Wrap" Foreground="{StaticResource AccentGlowBrush}" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource GlassCard}">
+                        <StackPanel Spacing="9">
+                            <TextBlock Text="3. START AND STAY IN CONTROL" Style="{StaticResource SectionTitle}" />
+                            <TextBlock Text="You can pause, resume, cancel, and still get the global warning countdown before the final action."
+                                       Style="{StaticResource CardBody}" />
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Button Content="Start timer" Command="{x:Bind ViewModel.StartCommand}"
+                                        IsEnabled="{x:Bind ViewModel.CanStart, Mode=OneWay}"
+                                        Style="{StaticResource GlowAccentButton}" />
+                                <Button Content="Pause" Command="{x:Bind ViewModel.PauseCommand}"
+                                        IsEnabled="{x:Bind ViewModel.CanPause, Mode=OneWay}"
+                                        Style="{StaticResource SubtleButton}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Button Content="Resume" Command="{x:Bind ViewModel.ResumeCommand}"
+                                        IsEnabled="{x:Bind ViewModel.CanResume, Mode=OneWay}"
+                                        Style="{StaticResource SubtleButton}" />
+                                <Button Content="Cancel" Command="{x:Bind ViewModel.CancelCommand}"
+                                        IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
+                                        Style="{StaticResource DangerButton}" />
+                            </StackPanel>
+                            <InfoBar x:Name="ValidationInfoBar"
+                                     Severity="Warning"
+                                     IsOpen="True"
+                                     Message="{x:Bind ViewModel.ValidationMessage, Mode=OneWay}"
+                                     IsIconVisible="True"
+                                     IsClosable="False"
+                                     Visibility="{x:Bind ViewModel.ValidationMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource CompactCard}">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Useful examples" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="Movie night: Sleep after 2 hours. Windows updates: Restart in 30 minutes. Long download: Hibernate after 4 hours."
+                                       Style="{StaticResource CardBody}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

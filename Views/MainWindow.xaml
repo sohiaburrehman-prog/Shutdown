@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="ShutdownTimer.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Shutdown Timer Advanced">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="BaseAlt" />
+    </Window.SystemBackdrop>
+
+    <Grid x:Name="RootGrid" Background="Transparent">
+        <!-- Warning Banner (hidden by default) -->
+        <Border x:Name="WarningBanner" Visibility="Collapsed" VerticalAlignment="Top"
+                Background="#E61F1F2E" BorderBrush="#66FFB020" BorderThickness="0,0,0,1"
+                Padding="18,12" Canvas.ZIndex="100">
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource DangerPill}" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xE7BA;" FontSize="18" Foreground="{StaticResource AccentRedBrush}" />
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Text="Final warning" Foreground="{StaticResource AccentWarmBrush}"
+                               FontSize="12" FontWeight="SemiBold" CharacterSpacing="80" />
+                    <TextBlock x:Name="WarningText"
+                               Foreground="White" FontSize="14" FontWeight="SemiBold"
+                               Text="System action in 30 seconds..." />
+                </StackPanel>
+                <Button Grid.Column="2" x:Name="WarningPostponeBtn" Content="+5 min"
+                        Click="WarningPostpone_Click" VerticalAlignment="Center"
+                        Style="{StaticResource SubtleButton}" />
+                <Button Grid.Column="3" x:Name="WarningPostpone10Btn" Content="+10 min"
+                        Click="WarningPostpone10_Click" VerticalAlignment="Center"
+                        Style="{StaticResource SubtleButton}" />
+                <Button Grid.Column="4" x:Name="WarningCancelBtn" Content="Cancel"
+                        Click="WarningCancel_Click" VerticalAlignment="Center"
+                        Style="{StaticResource DangerButton}" />
+            </Grid>
+        </Border>
+
+        <NavigationView
+            x:Name="NavView"
+            PaneDisplayMode="Left"
+            IsPaneToggleButtonVisible="False"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            OpenPaneLength="205"
+            ItemInvoked="NavView_ItemInvoked"
+            Background="Transparent"
+            PaneTitle="">
+
+            <NavigationView.PaneHeader>
+                <StackPanel Orientation="Horizontal" Spacing="9" Margin="10,8,0,8">
+                    <Border Style="{StaticResource BrandBadge}" Width="34" Height="34">
+                        <FontIcon Glyph="&#xE7E8;" FontSize="18" Foreground="{StaticResource AccentGlowBrush}" />
+                    </Border>
+                    <StackPanel VerticalAlignment="Center" Spacing="-2">
+                        <TextBlock Text="SHUTDOWN TIMER"
+                                   FontSize="10" FontWeight="SemiBold" CharacterSpacing="45"
+                                   Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="ADVANCED"
+                                   FontSize="9" FontWeight="SemiBold" CharacterSpacing="80"
+                                   Foreground="{StaticResource AccentGlowDimBrush}" />
+                        <TextBlock Text="v1.4" FontSize="9" Foreground="{ThemeResource DimForeground}" />
+                    </StackPanel>
+                </StackPanel>
+            </NavigationView.PaneHeader>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Activity Log" Tag="history">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE81C;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Help &amp; Guide" Tag="help">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE897;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Settings" Tag="settings">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Dashboard" Tag="dashboard" IsSelected="True">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Countdown" Tag="countdown">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE916;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Process Monitor" Tag="process">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE773;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Idle Detection" Tag="idle">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xEC46;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Schedule" Tag="schedule">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE787;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="ContentFrame" />
+        </NavigationView>
+    </Grid>
+</Window>

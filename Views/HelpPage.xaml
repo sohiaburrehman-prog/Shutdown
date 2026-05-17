@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.HelpPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Transparent">
+
+    <ScrollViewer Padding="32,24,32,20">
+        <StackPanel Spacing="20" MaxWidth="700" HorizontalAlignment="Left">
+
+            <!-- Page Title -->
+            <StackPanel>
+                <TextBlock Text="Help &amp; Guide" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                <TextBlock Text="Learn how to get the most out of Shutdown Timer Advanced"
+                           Foreground="{ThemeResource SubtleForeground}" FontSize="13" Margin="0,4,0,0" />
+            </StackPanel>
+
+            <Border Style="{StaticResource GlowCard}">
+                <Grid ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource BrandBadge}">
+                        <FontIcon Glyph="&#xE7E8;" FontSize="22" Foreground="White" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Spacing="4">
+                        <TextBlock Text="What’s new in v1.4" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                        <TextBlock Text="A compact dashboard, guided templates, battery automation, clearer schedules, and filtered activity history."
+                                   TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ═══ Countdown Timer ═══ -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE916;" FontSize="20" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Countdown Timer" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}"
+                               Text="Set a countdown with hours, minutes, and seconds, pick an action, and press Start. The timer runs even when minimised to the system tray. You can pause, resume, or cancel at any time." />
+                    <TextBlock Text="REAL-WORLD EXAMPLES" Style="{StaticResource SectionTitle}" Margin="0,6,0,0" />
+                    <StackPanel Spacing="6" Margin="8,0,0,0">
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Movie night</Run>
+                            <Run> — Set a 2-hour Shutdown timer before starting a film. Your PC powers off after the movie ends, even if you fall asleep on the sofa.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Power nap</Run>
+                            <Run> — 30-minute Sleep timer. The PC sleeps quietly and wakes when you tap a key.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Shared workstation</Run>
+                            <Run> — Set a 1-hour Lock timer during lunch. The workstation locks itself automatically if you forget.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Process Monitor ═══ -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE737;" FontSize="20" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Process Monitor" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}"
+                               Text="Pick a running application and trigger an action when it closes. Or switch to 'Wait for start' mode to trigger when a specific process launches." />
+                    <TextBlock Text="HOW IT WORKS" Style="{StaticResource SectionTitle}" Margin="0,6,0,0" />
+                    <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}"
+                               Text="The monitor uses a high-frequency polling system (every 500ms for exit, 1000ms for start). This is highly efficient and won't slow down your PC, but it means if a process exits and restarts in less than half a second, it might be missed." />
+                    <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,4,0,0"
+                               Text="Note: To monitor 'System' or administrative processes, you may need to run this app as Administrator." />
+                    <TextBlock Text="REAL-WORLD EXAMPLES" Style="{StaticResource SectionTitle}" Margin="0,6,0,0" />
+                    <StackPanel Spacing="6" Margin="8,0,0,0">
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Overnight render</Run>
+                            <Run> — Select Handbrake, Blender, or DaVinci Resolve and set Shutdown. Go to bed; the PC turns off when the render finishes.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Large download</Run>
+                            <Run> — Monitor qBitTorrent, Free Download Manager, or Steam and set Hibernate. No wasted electricity after the download completes.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Backup job</Run>
+                            <Run> — Monitor Veeam or Macrium Reflect and set Sleep. The PC sleeps automatically once the backup finishes.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">AFK gaming</Run>
+                            <Run> — Running a game overnight for idle rewards? Monitor it and set Shutdown — if the game crashes, the PC shuts down instead of sitting idle.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Wait for start</Run>
+                            <Run> — Type a process name to watch for it to launch. Useful for locking the PC when a specific game starts (parental control), or triggering a shutdown when a resource-heavy app appears.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Idle Detection ═══ -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE7B3;" FontSize="20" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Idle Detection" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}"
+                               Text="Triggers an action after a period of no keyboard or mouse input. The idle counter monitors system-wide input — any mouse move or keypress resets it. Set a threshold in minutes and choose your action." />
+                    <TextBlock Text="REAL-WORLD EXAMPLES" Style="{StaticResource SectionTitle}" Margin="0,6,0,0" />
+                    <StackPanel Spacing="6" Margin="8,0,0,0">
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Bedtime safety net</Run>
+                            <Run> — Set 15 minutes idle to Shutdown. If you fall asleep watching YouTube, the PC powers off on its own.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Office energy saving</Run>
+                            <Run> — 10 minutes idle to Sleep. Saves power when you leave your desk for a meeting and forget to lock up.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Shared lab computer</Run>
+                            <Run> — 5 minutes idle to Lock. Protects the session automatically if someone walks away from a shared workstation.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Server room PC</Run>
+                            <Run> — 30 minutes idle to Hibernate. Keeps the machine available during work hours but saves energy overnight.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Schedule ═══ -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE787;" FontSize="20" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Schedule" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}"
+                               Text="Create recurring schedules for specific days and times, or one-time schedules for a single event. The app must be running (even minimised to tray) for schedules to trigger. One-time schedules auto-disable after firing." />
+                    <TextBlock Text="REAL-WORLD EXAMPLES" Style="{StaticResource SectionTitle}" Margin="0,6,0,0" />
+                    <StackPanel Spacing="6" Margin="8,0,0,0">
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Kids' bedtime</Run>
+                            <Run> — Shutdown every weekday at 9 PM. The family PC turns off on time, no arguments needed.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Office policy</Run>
+                            <Run> — Hibernate at 7 PM Mon–Fri. Ensures workstations don't run all night even if employees forget.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Patch Tuesday</Run>
+                            <Run> — One-time Restart on Saturday at 3 AM. Windows updates apply cleanly while you sleep.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{StaticResource AccentWarmBrush}">Weekend security</Run>
+                            <Run> — Lock at 6 PM on Fri, Sat, Sun. Shared PCs lock automatically when no one is around.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Tips & FAQ ═══ -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE897;" FontSize="20" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Tips &amp; FAQ" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource PageTitleForeground}" />
+                    </StackPanel>
+                    <StackPanel Spacing="8" Margin="8,0,0,0">
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">Will I lose unsaved work?</Run>
+                            <Run> — Shutdown and Restart will close all apps. Enable warning notifications in Settings to get a heads-up before any action runs, giving you time to save. You can also configure a pre-action program to auto-save your work.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">What happens if my PC sleeps during a timer?</Run>
+                            <Run> — The app detects sleep/wake cycles. If the timer expired while the PC was asleep, the action triggers immediately on wake. If time remains, it continues counting down.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">Do schedules work when minimised to tray?</Run>
+                            <Run> — Yes. As long as the app is running (visible or minimised to tray), all schedules, idle detection, and process monitoring remain active.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">Can I combine features?</Run>
+                            <Run> — Yes. You can have a schedule running alongside idle detection and a process monitor simultaneously. The first trigger to fire executes the action.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">How reliable is Process Monitoring?</Run>
+                            <Run> — It's very reliable for apps that stay open (like a video converter or a game). It watches the process ID (PID) specifically. If the app crashes and doesn't restart, the action triggers immediately. If you're using 'Wait for start', it's perfect for triggering actions as soon as a specific program (like a miner or heavy tool) is launched.</Run>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource SubtleForeground}">
+                            <Run FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">Why didn't my timer fire?</Run>
+                            <Run> — Ensure the app wasn't closed. Also check if the PC was in 'Sleep' or 'Hibernate' mode. The app will sync when it wakes up, but it cannot trigger actions while the system itself is fully powered down or suspended.</Run>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Version footer -->
+            <TextBlock Text="Shutdown Timer Advanced v1.4  -  Developer: Sohiab"
+                       FontSize="11" Foreground="{ThemeResource DimForeground}" Margin="0,4,0,12" />
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

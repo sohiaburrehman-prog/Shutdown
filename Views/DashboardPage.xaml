@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:ShutdownTimer.ViewModels"
+    Background="Transparent">
+
+    <ScrollViewer Padding="22,16,22,14">
+        <StackPanel Spacing="12">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Spacing="2">
+                    <TextBlock Text="SHUTDOWN TIMER ADVANCED" Style="{StaticResource PageEyebrow}" />
+                    <TextBlock Text="Your next PC action" Style="{StaticResource PageHeading}" />
+                    <TextBlock Text="Create timers, schedules, process watchers, and idle rules from one command center."
+                               Style="{StaticResource PageDescription}" />
+                </StackPanel>
+                <Button x:Name="HelpBtn" Grid.Column="1" Style="{StaticResource HelpInfoButton}" VerticalAlignment="Top">
+                    <FontIcon Glyph="&#xE897;" FontSize="16" />
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedRight">
+                            <StackPanel Spacing="8" MaxWidth="300">
+                                <TextBlock Text="Dashboard Help" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                           Text="The Dashboard shows a live overview of all active features. The hero card displays the current countdown timer. Status cards show Process Monitor, Idle Detection, and Schedule states." />
+                                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                           Text="Click any status card to navigate to that feature. Use Quick Actions at the bottom to instantly trigger Sleep, Restart, or Shutdown." />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+
+            <Border Style="{StaticResource HeroCard}">
+                <Grid ColumnSpacing="18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Spacing="8">
+                        <Border Style="{StaticResource StatusPill}" HorizontalAlignment="Left">
+                            <TextBlock Text="{x:Bind ViewModel.AutomationSummary, Mode=OneWay}"
+                                       Foreground="{StaticResource AccentGlowBrush}" FontSize="12" FontWeight="SemiBold" />
+                        </Border>
+                        <TextBlock Text="{x:Bind ViewModel.NextActionTitle, Mode=OneWay}"
+                                   FontSize="22" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                        <TextBlock Text="{x:Bind ViewModel.NextActionDetail, Mode=OneWay}"
+                                   Style="{StaticResource PageDescription}" MaxWidth="620" />
+                        <TextBlock Text="{x:Bind ViewModel.NextActionTrigger, Mode=OneWay}"
+                                   FontSize="12" Foreground="{StaticResource AccentGlowDimBrush}" />
+                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,2,0,0">
+                            <Button Content="New countdown" Click="CountdownButton_Click" Style="{StaticResource GlowAccentButton}" />
+                            <Button Content="Add schedule" Click="ScheduleButton_Click" Style="{StaticResource SubtleButton}" />
+                            <Button Content="View activity" Click="HistoryCard_Click" Style="{StaticResource SubtleButton}" />
+                            <Button Content="Cancel active"
+                                    Command="{x:Bind ViewModel.CancelNextActionCommand}"
+                                    IsEnabled="{x:Bind ViewModel.CanCancelNextAction, Mode=OneWay}"
+                                    Style="{StaticResource DangerButton}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Spacing="5" VerticalAlignment="Center">
+                        <TextBlock Text="LIVE TIMER" Style="{StaticResource SectionTitle}" />
+                        <TextBlock Text="{x:Bind ViewModel.TimerDisplay, Mode=OneWay}"
+                                   Style="{StaticResource TimerDisplay}" FontSize="30" HorizontalAlignment="Left" />
+                        <ProgressBar Value="{x:Bind ViewModel.TimerProgress, Mode=OneWay}"
+                                     Maximum="100" Height="5" CornerRadius="3"
+                                     Foreground="{StaticResource AccentGlowBrush}"
+                                     Background="{ThemeResource CardBorderBrush}" />
+                        <TextBlock Text="{x:Bind ViewModel.TimerStatusText, Mode=OneWay}" Style="{StaticResource CardBody}" />
+                    </StackPanel>
+
+                    <Border Grid.Column="2" Style="{StaticResource BrandBadge}" Width="42" Height="42" VerticalAlignment="Top">
+                        <FontIcon Glyph="&#xE7E8;" FontSize="22" Foreground="{StaticResource AccentGlowBrush}" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CommandCard}" PointerPressed="CountdownCard_Click">
+                    <StackPanel Spacing="6">
+                        <FontIcon Glyph="&#xE916;" FontSize="22" Foreground="{StaticResource AccentGlowBrush}" />
+                        <TextBlock Text="Countdown" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="Quick timer for movies, downloads, or updates."
+                                   Style="{StaticResource CardBody}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CommandCard}" PointerPressed="ScheduleCard_Click">
+                    <StackPanel Spacing="6">
+                        <FontIcon Glyph="&#xE787;" FontSize="22" Foreground="{StaticResource AccentGreenBrush}" />
+                        <TextBlock Text="Schedule" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Bind ViewModel.NextScheduleText, Mode=OneWay}" Style="{StaticResource CardBody}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource CommandCard}" PointerPressed="ProcessCard_Click">
+                    <StackPanel Spacing="6">
+                        <FontIcon Glyph="&#xE773;" FontSize="22" Foreground="{StaticResource AccentPurpleBrush}" />
+                        <TextBlock Text="Process Watcher" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Bind ViewModel.ProcessStatusText, Mode=OneWay}" Style="{StaticResource CardBody}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3" Style="{StaticResource CommandCard}" PointerPressed="IdleCard_Click">
+                    <StackPanel Spacing="6">
+                        <FontIcon Glyph="&#xEC46;" FontSize="22" Foreground="{StaticResource AccentWarmBrush}" />
+                        <TextBlock Text="Idle Rule" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Bind ViewModel.IdleStatusText, Mode=OneWay}" Style="{StaticResource CardBody}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource GlassCard}" Padding="0">
+                    <Grid>
+                        <StackPanel Padding="14" Spacing="6"
+                                    Visibility="{x:Bind ViewModel.HasActiveAutomations, Mode=OneWay, Converter={StaticResource InverseBoolToVisibility}}">
+                            <TextBlock Text="No active automations yet" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="Use the quick-start cards above to create a timer, schedule, process watcher, or idle rule."
+                                       Style="{StaticResource CardBody}" />
+                        </StackPanel>
+
+                        <StackPanel Padding="14" Spacing="8"
+                                    Visibility="{x:Bind ViewModel.HasActiveAutomations, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="ACTIVE AUTOMATIONS" Style="{StaticResource SectionTitle}" />
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.ActiveAutomations, Mode=OneWay}">
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Spacing="8" />
+                                </ItemsRepeater.Layout>
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:AutomationStatus">
+                                        <Border Style="{StaticResource CompactCard}">
+                                            <Grid ColumnSpacing="12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <FontIcon Glyph="{x:Bind Icon}" FontSize="20"
+                                                          Foreground="{StaticResource AccentGlowBrush}" VerticalAlignment="Center" />
+                                                <StackPanel Grid.Column="1" Spacing="2">
+                                                    <TextBlock Text="{x:Bind Name}" Style="{StaticResource CardTitle}" FontSize="14" />
+                                                    <TextBlock Text="{x:Bind Detail}" Style="{StaticResource CardBody}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="12">
+                    <Border Style="{StaticResource GlassCard}">
+                        <StackPanel Spacing="7">
+                            <TextBlock Text="POWER INSIGHT" Style="{StaticResource SectionTitle}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="{x:Bind ViewModel.BatteryIcon, Mode=OneWay}"
+                                          FontSize="26" Foreground="{StaticResource AccentGlowBrush}" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{x:Bind ViewModel.BatteryPercentage, Mode=OneWay, Converter={StaticResource PercentageString}}"
+                                               Style="{StaticResource StatValue}" />
+                                    <TextBlock Text="{x:Bind ViewModel.BatteryInsight, Mode=OneWay}" Style="{StaticResource CardBody}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource GlassCard}">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="IMMEDIATE ACTIONS" Style="{StaticResource SectionTitle}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="Lock" Command="{x:Bind ViewModel.QuickLockCommand}" Style="{StaticResource SubtleButton}" />
+                                <Button Content="Sleep" Command="{x:Bind ViewModel.QuickSleepCommand}" Style="{StaticResource GlowAccentButton}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="Restart" Command="{x:Bind ViewModel.QuickRestartCommand}" Style="{StaticResource SubtleButton}" />
+                                <Button Content="Shutdown" Command="{x:Bind ViewModel.QuickShutdownCommand}" Style="{StaticResource DangerButton}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

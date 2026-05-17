@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.HistoryPage"
+    x:Name="HistoryRoot"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ShutdownTimer.Models"
+    Background="Transparent">
+
+    <Grid Padding="28,20,28,16" RowSpacing="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Page Title -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="ACTIVITY REVIEW" Style="{StaticResource PageEyebrow}" />
+                <TextBlock Text="What happened, and why" Style="{StaticResource PageHeading}" />
+                <TextBlock Text="Review triggered, postponed, and cancelled power actions from every automation path."
+                           Style="{StaticResource PageDescription}" Margin="0,6,0,0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
+                <ComboBox ItemsSource="{x:Bind ViewModel.FilterOptions}"
+                          SelectedIndex="{x:Bind ViewModel.SelectedFilterIndex, Mode=TwoWay}"
+                          MinWidth="140" />
+                <Button Content="Clear History"
+                        Command="{x:Bind ViewModel.ClearHistoryCommand}"
+                        Style="{StaticResource DangerButton}"
+                        Padding="12,6" FontSize="12" />
+            </StackPanel>
+        </Grid>
+
+        <!-- History List -->
+        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="0">
+            <Grid>
+                <!-- Empty state -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Spacing="8" Padding="24"
+                            Visibility="{x:Bind ViewModel.IsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <FontIcon Glyph="&#xE81C;" FontSize="32" Foreground="{ThemeResource DimForeground}"
+                              HorizontalAlignment="Center" />
+                    <TextBlock Text="No activity yet" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{ThemeResource SubtleForeground}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Actions will appear here when timers, monitors, or schedules fire"
+                               FontSize="12" Foreground="{ThemeResource DimForeground}"
+                               HorizontalAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+
+                <ListView ItemsSource="{x:Bind ViewModel.HistoryEntries, Mode=OneWay}"
+                          SelectionMode="None" Background="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:HistoryEntry">
+                            <Grid Padding="16,10" ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Status indicator -->
+                                <Ellipse Grid.Column="0" Width="10" Height="10" VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <SolidColorBrush Color="{x:Bind WasCancelled, Converter={StaticResource BoolToStatusColor}}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+
+                                <StackPanel Grid.Column="1">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}">
+                                            <Run Text="{x:Bind Action}" />
+                                        </TextBlock>
+                                        <TextBlock Text="{x:Bind Trigger}" FontSize="12"
+                                                   Foreground="{StaticResource AccentGlowBrush}"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="(cancelled)" FontSize="11"
+                                                   Foreground="{StaticResource AccentRedBrush}"
+                                                   Visibility="{x:Bind WasCancelled, Converter={StaticResource BoolToVisibility}}"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="{x:Bind StatusText}" FontSize="11"
+                                                   Foreground="{ThemeResource DimForeground}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind Details}" FontSize="12"
+                                               Foreground="{ThemeResource SubtleForeground}"
+                                               TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="2" Text="{x:Bind FriendlyTimestamp}" VerticalAlignment="Center"
+                                           FontSize="11" Foreground="{ThemeResource DimForeground}" FontFamily="Consolas" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
+
+        <!-- Status -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
+            <TextBlock Text="{x:Bind ViewModel.SummaryText, Mode=OneWay}"
+                       FontSize="13" Foreground="{ThemeResource SubtleForeground}" />
+            <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                       FontSize="13" Foreground="{ThemeResource SubtleForeground}" />
+        </StackPanel>
+    </Grid>
+</Page>

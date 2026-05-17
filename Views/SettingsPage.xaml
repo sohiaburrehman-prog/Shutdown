@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ShutdownTimer.Views.SettingsPage"
+    x:Name="SettingsRoot"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ShutdownTimer.Models"
+    Background="Transparent">
+
+    <ScrollViewer Padding="22,16,22,14">
+        <StackPanel Spacing="10" MaxWidth="860" HorizontalAlignment="Left">
+
+            <!-- Page Title -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Spacing="2">
+                    <TextBlock Text="CONTROL ROOM" Style="{StaticResource PageEyebrow}" />
+                    <TextBlock Text="Defaults, safety, and automation behavior" Style="{StaticResource PageHeading}" />
+                    <TextBlock Text="Tune warnings, tray behavior, presets, startup, and pre-action automation."
+                               Style="{StaticResource PageDescription}" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{StaticResource HelpInfoButton}" VerticalAlignment="Top">
+                    <FontIcon Glyph="&#xE897;" FontSize="16" />
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedRight">
+                            <StackPanel Spacing="8" MaxWidth="300">
+                                <TextBlock Text="Settings Help" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource SubtleForeground}" FontSize="13"
+                                           Text="All changes are saved automatically. Manage quick presets, configure pre-action programs, and customize notifications." />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+
+            <!-- Theme Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="APPEARANCE" Style="{StaticResource SectionTitle}" />
+                    <ComboBox Header="Theme" Width="250"
+                              ItemsSource="{x:Bind ViewModel.AvailableThemes}"
+                              SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Tray Behavior Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="TRAY BEHAVIOR" Style="{StaticResource SectionTitle}" />
+                    <ToggleSwitch Header="Minimize to tray on close"
+                                  IsOn="{x:Bind ViewModel.MinimizeToTrayOnClose, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <ToggleSwitch Header="Start minimized to tray"
+                                  IsOn="{x:Bind ViewModel.StartMinimized, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <ToggleSwitch Header="Run at startup"
+                                  IsOn="{x:Bind ViewModel.RunAtStartup, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                </StackPanel>
+            </Border>
+
+            <!-- Notifications Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="SAFETY WARNINGS" Style="{StaticResource SectionTitle}" />
+                    <Border Style="{StaticResource PreviewPanel}" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Shared cancel/postpone warnings for timers, schedules, process watchers, idle rules, dashboard actions, and tray actions."
+                                   Foreground="{StaticResource AccentGlowBrush}" TextWrapping="Wrap" />
+                    </Border>
+                    <ToggleSwitch Header="Show warning before action"
+                                  IsOn="{x:Bind ViewModel.ShowWarningNotification, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <ToggleSwitch Header="Play warning sound"
+                                  IsOn="{x:Bind ViewModel.EnableNotificationSound, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <ToggleSwitch Header="Show Windows toast notification"
+                                  IsOn="{x:Bind ViewModel.ShowToastNotification, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <NumberBox Header="Warning time (seconds)"
+                               Value="{x:Bind ViewModel.WarningSeconds, Mode=TwoWay}"
+                               Minimum="5" Maximum="300"
+                               SpinButtonPlacementMode="Compact" Width="200" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="BATTERY AUTOMATION" Style="{StaticResource SectionTitle}" />
+                    <Border Style="{StaticResource PreviewPanel}" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Trigger Sleep or Hibernate automatically when battery gets low. Best for laptops and handheld PCs."
+                                   Foreground="{StaticResource AccentGlowBrush}" TextWrapping="Wrap" />
+                    </Border>
+                    <ToggleSwitch Header="Only run battery actions when unplugged"
+                                  IsOn="{x:Bind ViewModel.BatteryAutomationOnlyWhenUnplugged, Mode=TwoWay}"
+                                  OnContent="On" OffContent="Off" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ToggleSwitch Grid.Column="0" Header="Low battery rule"
+                                      IsOn="{x:Bind ViewModel.LowBatteryAutomationEnabled, Mode=TwoWay}"
+                                      OnContent="On" OffContent="Off" />
+                        <NumberBox Grid.Column="1" Header="Low threshold (%)"
+                                   Value="{x:Bind ViewModel.LowBatteryThreshold, Mode=TwoWay}"
+                                   Minimum="5" Maximum="95" SpinButtonPlacementMode="Compact" />
+                        <ComboBox Grid.Column="2" Header="Low action"
+                                  ItemsSource="{x:Bind ViewModel.AvailableActions}"
+                                  SelectedItem="{x:Bind ViewModel.LowBatteryAction, Mode=TwoWay}" />
+                    </Grid>
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ToggleSwitch Grid.Column="0" Header="Critical battery rule"
+                                      IsOn="{x:Bind ViewModel.CriticalBatteryAutomationEnabled, Mode=TwoWay}"
+                                      OnContent="On" OffContent="Off" />
+                        <NumberBox Grid.Column="1" Header="Critical threshold (%)"
+                                   Value="{x:Bind ViewModel.CriticalBatteryThreshold, Mode=TwoWay}"
+                                   Minimum="1" Maximum="90" SpinButtonPlacementMode="Compact" />
+                        <ComboBox Grid.Column="2" Header="Critical action"
+                                  ItemsSource="{x:Bind ViewModel.AvailableActions}"
+                                  SelectedItem="{x:Bind ViewModel.CriticalBatteryAction, Mode=TwoWay}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Quick Presets Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="QUICK PRESETS" Style="{StaticResource SectionTitle}" />
+                    <TextBlock Text="Customize the preset buttons on the Countdown Timer page."
+                               FontSize="12" Foreground="{ThemeResource SubtleForeground}" Margin="0,-4,0,0" />
+
+                    <!-- Existing presets -->
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.QuickPresets, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="6" />
+                        </ItemsRepeater.Layout>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="models:PresetEntry">
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{x:Bind Label}" VerticalAlignment="Center"
+                                               Foreground="{ThemeResource PageTitleForeground}" />
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                               FontSize="12" Foreground="{ThemeResource DimForeground}">
+                                        <Run Text="{x:Bind TotalMinutes}" /><Run Text=" min" />
+                                    </TextBlock>
+                                    <Button Grid.Column="2" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                            Command="{Binding ElementName=SettingsRoot, Path=ViewModel.RemovePresetCommand}"
+                                            CommandParameter="{x:Bind}"
+                                            Style="{StaticResource SubtleButton}" Padding="6,4" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+
+                    <!-- Add new preset -->
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox PlaceholderText="Label (e.g. 45 min)" Width="160"
+                                 Text="{x:Bind ViewModel.NewPresetLabel, Mode=TwoWay}" />
+                        <NumberBox PlaceholderText="Minutes" Width="100"
+                                   Value="{x:Bind ViewModel.NewPresetMinutes, Mode=TwoWay}"
+                                   Minimum="1" Maximum="1440" SpinButtonPlacementMode="Compact" />
+                        <Button Content="Add" Command="{x:Bind ViewModel.AddPresetCommand}"
+                                Style="{StaticResource GlowAccentButton}" Padding="12,6" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Pre-Action Program Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="PRE-ACTION PROGRAM" Style="{StaticResource SectionTitle}" />
+                    <TextBlock Text="Run a script or program before any system action executes (e.g. auto-save, sync files)."
+                               FontSize="12" Foreground="{ThemeResource SubtleForeground}" TextWrapping="Wrap" Margin="0,-4,0,0" />
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <TextBox Header="Program path (.exe, .bat, .ps1)"
+                                 PlaceholderText="C:\Scripts\pre-shutdown.bat"
+                                 Text="{x:Bind ViewModel.PreActionProgramPath, Mode=TwoWay}"
+                                 Width="400" />
+                        <Button Content="Test Path" Command="{x:Bind ViewModel.TestPreActionPathCommand}"
+                                Style="{StaticResource SubtleButton}" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                    <NumberBox Header="Timeout (seconds)"
+                               Value="{x:Bind ViewModel.PreActionTimeoutSeconds, Mode=TwoWay}"
+                               Minimum="5" Maximum="120"
+                               SpinButtonPlacementMode="Compact" Width="200" />
+                </StackPanel>
+            </Border>
+
+            <!-- Defaults Card -->
+            <Border Style="{StaticResource GlassCard}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="DEFAULTS" Style="{StaticResource SectionTitle}" />
+                    <ComboBox Header="Default action" Width="200"
+                              ItemsSource="{x:Bind ViewModel.AvailableActions}"
+                              SelectedItem="{x:Bind ViewModel.DefaultAction, Mode=TwoWay}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Reset to Defaults -->
+            <Button Content="Reset to Defaults"
+                    Command="{x:Bind ViewModel.ResetToDefaultsCommand}"
+                    Style="{StaticResource SubtleButton}" />
+
+            <InfoBar x:Name="SettingsStatusInfoBar"
+                     Message="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                     IsOpen="True"
+                     Visibility="{x:Bind ViewModel.StatusText, Mode=OneWay, Converter={StaticResource StringToVisibility}}"
+                     Severity="{x:Bind ViewModel.IsStatusError, Mode=OneWay, Converter={StaticResource BoolToInfoBarSeverity}}"
+                     IsIconVisible="True"
+                     IsClosable="False" />
+
+            <!-- About & Legal -->
+            <Border Style="{StaticResource GlassCard}" Opacity="0.7">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="ABOUT" Style="{StaticResource SectionTitle}" />
+                    <TextBlock Text="Shutdown Timer Advanced v1.4" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                    <TextBlock Text="Built with WinUI 3 / .NET 9" FontSize="12"
+                               Foreground="{ThemeResource DimForeground}" />
+                    <TextBlock FontSize="12" Foreground="{ThemeResource DimForeground}" Margin="0,4,0,0"
+                               Text="Developer: Sohiab" />
+                    <HyperlinkButton Content="sohiab@outlook.com"
+                                     NavigateUri="mailto:sohiab@outlook.com"
+                                     FontSize="12" Padding="0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GlassCard}" Opacity="0.7">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="LEGAL &amp; PRIVACY" Style="{StaticResource SectionTitle}" />
+                    <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{ThemeResource SubtleForeground}"
+                               Text="This app does not collect, transmit, or store any personal data. All settings are stored locally on your device. No analytics or telemetry data is sent anywhere." />
+                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,4,0,0">
+                        <HyperlinkButton Content="Privacy Policy" Click="PrivacyLink_Click" FontSize="13" />
+                        <HyperlinkButton Content="EULA" Click="EulaLink_Click" FontSize="13" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
