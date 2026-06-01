@@ -30,7 +30,9 @@ This application does not collect any data from users. There is no telemetry, no
 
 The Software stores the following data ONLY on your local device:
 
-- **Shutdown Timer Advanced:** User preferences, settings, and an activity log are stored locally in the application data directory (`%APPDATA%\ShutdownTimer`). The activity log records action type, trigger method, timestamp, and success/failure status for your reference. This log may constitute behavioural data (e.g., recording when your computer was shut down) but it never leaves your device. You can clear the activity log at any time from the Activity Log page. A "Clear All Data" reset option is available in the application Settings, which restores all settings to defaults.
+- **Shutdown Timer Advanced:** User preferences, settings, schedules, battery automation thresholds, and an activity log are stored locally in the application data directory (`%APPDATA%\ShutdownTimer`). The activity log records action type, trigger method, timestamp, and success/failure status for your reference. This log may constitute behavioural data (e.g., recording when your computer was shut down) but it never leaves your device. Battery percentage is read from Windows power APIs only while the app is running to support optional battery automation; it is not stored or transmitted. You can clear the activity log at any time from the Activity Log page.
+- **Clear All Data** (Settings) removes local settings, schedules, history, startup registry entries, and integrity metadata, then writes a fresh default configuration.
+- **Reset to Defaults** (Settings) restores preference defaults but keeps schedules and activity history.
 - **Shutdown Timer Lite:** No persistent data is stored. All settings reset when the application is closed.
 
 You can delete all locally stored data at any time by uninstalling the Software or removing its application data directory.
@@ -60,7 +62,7 @@ The Software provides functionality to perform the following system power manage
 - Users can cancel any scheduled action at any time before it executes.
 - The Advanced version provides configurable warning notifications before any action is carried out, giving you time to save work and cancel if needed.
 - In the Lite version, the action executes immediately when the countdown reaches zero. Users can cancel at any time before that point.
-- The Advanced version can optionally run a user-specified program before executing any action, allowing you to save work or run cleanup scripts. This program path is configured entirely by you and stored locally.
+- The Advanced version can optionally run a user-specified `.exe` or `.com` program before executing any action. This program path is configured entirely by you and stored locally.
 - No action is ever performed without the user first explicitly starting a timer or enabling a trigger.
 - The Software runs as a standard user application and does not require administrator privileges.
 
@@ -68,7 +70,7 @@ The Software provides functionality to perform the following system power manage
 
 - Both versions minimise to the system tray and taskbar. The Lite version shows a tray icon with a right-click menu to restore or exit.
 - The Advanced version can optionally start minimized to the tray. This is clearly configurable in Settings and is off by default.
-- Process monitoring and idle detection features (Advanced only) run only when explicitly enabled by the user and are clearly indicated in the interface. The process monitoring feature can observe running processes to detect when a specific program exits or starts, and may display memory usage while the monitoring page is open. This information is transient and is never stored or transmitted.
+- Process monitoring, idle detection, and battery automation (Advanced only) run only when explicitly enabled by the user and are clearly indicated in the interface. The process monitoring feature can observe running processes to detect when a specific program exits or starts, and may display memory usage while the monitoring page is open. Battery automation reads the current charge level from Windows to compare against user-configured thresholds. This information is transient and is never stored or transmitted beyond local settings you choose to save.
 
 ## Permissions
 

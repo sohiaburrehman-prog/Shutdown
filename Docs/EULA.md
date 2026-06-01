@@ -33,7 +33,7 @@ THE SOFTWARE PROVIDES FUNCTIONALITY TO INITIATE SYSTEM SHUTDOWN, RESTART, SLEEP,
 - These actions may result in loss of unsaved work in other applications.
 - The User is solely responsible for saving all work before initiating or scheduling any system action.
 - The Licensor is not responsible for any data loss, corruption, or damage resulting from the use of system power management features.
-- Scheduled and automated actions (including idle detection and process monitoring triggers) will execute without additional confirmation once configured by the User.
+- Scheduled and automated actions (including idle detection, process monitoring, and battery threshold triggers) will execute without additional confirmation once configured by the User, subject to any warning settings the User has enabled.
 
 ## 5. No Warranty
 

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ShutdownTimer.Helpers;
 using ShutdownTimer.Models;
 using ShutdownTimer.Services;
 
@@ -42,6 +43,7 @@ public partial class SettingsViewModel : ObservableObject
     public string[] AvailableThemes { get; } = ["System (follow Windows)", "Light", "Dark"];
 
     public event Action<int>? ThemeChanged;
+    public event Action? AllDataCleared;
 
     partial void OnThemeIndexChanged(int value)
     {
@@ -70,20 +72,10 @@ public partial class SettingsViewModel : ObservableObject
     {
         try
         {
-            const string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-            const string valueName = "ShutdownTimerAdvanced";
             var exePath = Process.GetCurrentProcess().MainModule?.FileName;
-
             if (exePath == null) return;
 
-            using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(keyPath, true);
-            if (key == null) return;
-
-            if (value)
-                key.SetValue(valueName, $"\"{exePath}\"");
-            else
-                key.DeleteValue(valueName, false);
-
+            StartupRegistryHelper.SetRunAtStartup(value, exePath);
             AutoSave();
             ShowStatus($"Run at startup {(value ? "enabled" : "disabled")}.");
         }
@@ -122,6 +114,14 @@ public partial class SettingsViewModel : ObservableObject
         PreActionTimeoutSeconds = s.PreActionTimeoutSeconds;
         QuickPresets = new ObservableCollection<PresetEntry>(s.QuickPresets);
         _isLoading = false;
+
+        if (_settingsService.SettingsWereTampered)
+        {
+            ShowStatus(
+                _settingsService.IntegrityMessage ??
+                "Settings were reset because the saved configuration failed integrity verification.",
+                true);
+        }
     }
 
     private void ShowStatus(string message, bool isError = false)
@@ -180,12 +180,13 @@ public partial class SettingsViewModel : ObservableObject
         }
 
         var ext = Path.GetExtension(path).ToLowerInvariant();
-        if (ext is not (".exe" or ".com" or ".bat" or ".ps1"))
+        if (ext is not (".exe" or ".com"))
         {
-            ShowStatus($"Potentially unsupported extension: {ext}", true);
+            ShowStatus("Only .exe and .com programs are supported for pre-action execution.", true);
+            return;
         }
 
-        ShowStatus($"Path exists! Extension: {ext}");
+        ShowStatus($"Path exists and extension is allowed: {ext}");
     }
 
     [RelayCommand]
@@ -216,6 +217,16 @@ public partial class SettingsViewModel : ObservableObject
         _settingsService.Settings.QuickPresets.Remove(preset);
         await _settingsService.SaveAsync();
         StatusText = $"Removed preset: {preset.Label}";
+    }
+
+    [RelayCommand]
+    private async Task ClearAllData()
+    {
+        await _settingsService.ClearAllDataAsync();
+        Load();
+        ThemeChanged?.Invoke(ThemeIndex);
+        AllDataCleared?.Invoke();
+        StatusText = "All local data cleared. Settings, schedules, history, and startup entry were reset.";
     }
 
     [RelayCommand]

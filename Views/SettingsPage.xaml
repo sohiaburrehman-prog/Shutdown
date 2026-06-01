@@ -183,11 +183,11 @@
             <Border Style="{StaticResource GlassCard}">
                 <StackPanel Spacing="8">
                     <TextBlock Text="PRE-ACTION PROGRAM" Style="{StaticResource SectionTitle}" />
-                    <TextBlock Text="Run a script or program before any system action executes (e.g. auto-save, sync files)."
+                    <TextBlock Text="Run a program (.exe or .com) before any system action executes (e.g. auto-save tool)."
                                FontSize="12" Foreground="{ThemeResource SubtleForeground}" TextWrapping="Wrap" Margin="0,-4,0,0" />
                     <StackPanel Orientation="Horizontal" Spacing="12">
-                        <TextBox Header="Program path (.exe, .bat, .ps1)"
-                                 PlaceholderText="C:\Scripts\pre-shutdown.bat"
+                        <TextBox Header="Program path (.exe, .com)"
+                                 PlaceholderText="C:\Tools\pre-shutdown.exe"
                                  Text="{x:Bind ViewModel.PreActionProgramPath, Mode=TwoWay}"
                                  Width="400" />
                         <Button Content="Test Path" Command="{x:Bind ViewModel.TestPreActionPathCommand}"
@@ -210,10 +210,15 @@
                 </StackPanel>
             </Border>
 
-            <!-- Reset to Defaults -->
-            <Button Content="Reset to Defaults"
-                    Command="{x:Bind ViewModel.ResetToDefaultsCommand}"
-                    Style="{StaticResource SubtleButton}" />
+            <!-- Reset / Clear -->
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="Reset to Defaults"
+                        Command="{x:Bind ViewModel.ResetToDefaultsCommand}"
+                        Style="{StaticResource SubtleButton}" />
+                <Button Content="Clear All Data"
+                        Command="{x:Bind ViewModel.ClearAllDataCommand}"
+                        Style="{StaticResource DangerButton}" />
+            </StackPanel>
 
             <InfoBar x:Name="SettingsStatusInfoBar"
                      Message="{x:Bind ViewModel.StatusText, Mode=OneWay}"

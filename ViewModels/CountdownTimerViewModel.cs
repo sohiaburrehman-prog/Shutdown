@@ -55,6 +55,27 @@ public partial class CountdownTimerViewModel : ObservableObject
         QuickPresets = new ObservableCollection<PresetEntry>(_settingsService.Settings.QuickPresets);
     }
 
+    /// <summary>
+    /// Starts a countdown from taskbar jump list or other quick-launch entry points.
+    /// </summary>
+    public void StartQuickCountdown(int totalMinutes)
+    {
+        if (totalMinutes <= 0)
+            return;
+
+        Hours = totalMinutes / 60;
+        Minutes = totalMinutes % 60;
+        Seconds = 0;
+        SelectedAction = _settingsService.Settings.DefaultAction;
+        UpdatePreview();
+
+        _totalDuration = new TimeSpan(Hours, Minutes, Seconds);
+        ValidationMessage = "";
+        _timerService.Start(_totalDuration);
+        UpdateState(TimerState.Running);
+        RunningSummary = $"{SelectedAction} will run after {DurationSummary.ToLowerInvariant()}.";
+    }
+
     [RelayCommand]
     private void SetPreset(PresetEntry? preset)
     {

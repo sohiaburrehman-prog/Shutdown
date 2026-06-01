@@ -105,7 +105,7 @@ File managers  (or "Productivity" if available — pick whichever fits best from
 ```
 TODO — Replace with your hosted privacy policy URL before publishing publicly.
 For tester flight this can be left blank or use a placeholder like:
-https://github.com/YourUsername/ShutdownTimerLite/blob/main/PRIVACY.md
+https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
 ```
 
 ## Support Contact

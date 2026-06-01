@@ -13,7 +13,7 @@
 
 #define MyAppName "Shutdown Timer"
 #define MyAppVersion "1.4.0"
-#define MyAppPublisher "Providence"
+#define MyAppPublisher "Sohiab"
 #define MyAppExeName "ShutdownTimer.exe"
 #define MyAppURL "https://apps.microsoft.com/detail/9NW80PKZNS4Z"
 
@@ -60,6 +60,7 @@ Source: "{#BuildOutput}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdir
 ; Legal documents
 Source: "Docs\PRIVACY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Docs\EULA.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Docs\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -68,7 +69,7 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Registry]
 ; Optional startup entry (only if user selects the task)
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ShutdownTimer"; ValueData: """{app}\{#MyAppExeName}"""; Flags: uninsdeletevalue; Tasks: startupentry
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ShutdownTimerAdvanced"; ValueData: """{app}\{#MyAppExeName}"""; Flags: uninsdeletevalue; Tasks: startupentry
 
 [Code]
 function PrepareToInstall(var NeedsRestart: Boolean): String;

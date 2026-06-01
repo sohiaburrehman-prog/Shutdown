@@ -39,7 +39,7 @@ public class AppSettings
     };
 
     /// <summary>
-    /// Optional path to a program/script to run before the system action executes.
+    /// Optional path to a program (.exe or .com) to run before the system action executes.
     /// </summary>
     public string? PreActionProgramPath { get; set; }
 

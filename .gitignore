@@ -15,6 +15,9 @@ Installer/
 # Portable zip
 *.zip
 
+# MSIX layout
+msix-output/
+
 # Certificates (NEVER commit private keys)
 certs/
 *.pfx

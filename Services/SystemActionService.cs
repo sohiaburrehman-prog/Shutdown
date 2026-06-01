@@ -135,7 +135,7 @@ public class SystemActionService : ISystemActionService
                 var trigger = _pendingTrigger;
                 var details = _pendingDetails;
                 CancelWarning();
-                RunPreActionAndExecute(action, trigger, details);
+                Task.Run(() => RunPreActionAndExecute(action, trigger, details));
             }
             else
             {
@@ -205,6 +205,10 @@ public class SystemActionService : ISystemActionService
                     if (!File.Exists(fullPath))
                     {
                         Debug.WriteLine($"[SystemActionService] Pre-action program not found: {fullPath}");
+                    }
+                    else if (File.GetAttributes(fullPath).HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        Debug.WriteLine("[SystemActionService] Pre-action program rejected: reparse points are not allowed.");
                     }
                     else
                     {

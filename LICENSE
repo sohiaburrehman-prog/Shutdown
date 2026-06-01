@@ -1,0 +1,31 @@
+Copyright (c) 2026 Sohiab. All Rights Reserved.
+
+Shutdown Timer Advanced — Proprietary Software License
+
+This repository contains source code for Shutdown Timer Advanced ("Software").
+
+1. GRANT OF VIEWING RIGHTS
+   You may view and clone this repository for personal review, security
+   research, and educational reference only.
+
+2. RESTRICTIONS
+   Unless you have a separate written agreement with the copyright holder,
+   you may NOT:
+   - Use, copy, modify, merge, publish, distribute, sublicense, or sell
+     copies of the Software or derivative works;
+   - Reverse engineer, decompile, or disassemble the Software except where
+     applicable law expressly permits and cannot be waived;
+   - Remove or alter copyright, trademark, or license notices.
+
+3. APPLICATION USE
+   Installation and use of compiled binaries (including builds from the
+   Microsoft Store or official installers) is governed by the End-User
+   License Agreement in Docs/EULA.md.
+
+4. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+5. CONTACT
+   Licensing inquiries: sohiab@outlook.com

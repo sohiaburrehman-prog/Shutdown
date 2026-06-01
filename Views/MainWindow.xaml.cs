@@ -113,11 +113,15 @@ public sealed partial class MainWindow : Window
 
     private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
+        if (_origWndProc == IntPtr.Zero)
+            return IntPtr.Zero;
+
         if (msg == WindowInterop.WM_SIZE && (int)wParam == WindowInterop.SIZE_MINIMIZED)
         {
             HideWindow();
             return IntPtr.Zero;
         }
+
         return WindowInterop.CallWindowProc(_origWndProc, hWnd, msg, wParam, lParam);
     }
 

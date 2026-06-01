@@ -1,0 +1,75 @@
+name: Bug report
+description: Report a problem with Shutdown Timer Advanced
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue. Please do **not** use this form for security vulnerabilities — see [SECURITY.md](../SECURITY.md).
+
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: e.g. 1.4.0 from Settings or the Microsoft Store
+      placeholder: "1.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Windows version
+      description: e.g. Windows 11 24H2 (build 26100)
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Countdown timer
+        - Process monitor
+        - Idle detection
+        - Schedule
+        - Battery automation
+        - Dashboard
+        - Settings / tray
+        - Installer
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Screenshots, logs, or configuration details (no secrets)

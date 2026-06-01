@@ -1,16 +1,21 @@
-# Shutdown Timer Advanced
+# Shutdown Timer Advanced — Developer Guide
 
-A modern Windows shutdown/restart/sleep utility built with WinUI 3 and .NET 9, featuring a dark glassmorphism UI.
+A modern Windows shutdown/restart/sleep utility built with WinUI 3 and .NET 9.
 
-## Features
+For the public project overview, see the [root README](../README.md).
 
-- **Countdown Timer** — Set hours/minutes/seconds, choose an action (shutdown, restart, sleep, hibernate, log off), and let it count down.
-- **Process Monitor** — Select any running application and automatically trigger an action when it closes. Perfect for shutting down after a game, render, or long task.
-- **Idle Detection** — Monitors mouse and keyboard inactivity via Win32 `GetLastInputInfo`. Triggers your chosen action after a configurable idle threshold.
-- **Recurring Schedules** — Set up cron-based schedules with a friendly day-of-week + time picker. Persisted to JSON in AppData.
-- **System Tray** — Minimizes to tray with right-click context menu for quick actions. Tooltip shows remaining countdown time.
-- **Dashboard** — At-a-glance overview of all active timers, monitors, and schedules.
-- **Theme Support** — System (follows Windows), Light, or Dark theme with live switching.
+## Features (v1.4)
+
+- **Countdown Timer** — Set hours/minutes/seconds with guided templates (movie night, update restart, long download).
+- **Process Monitor** — Trigger an action when a selected app exits or when a named process starts.
+- **Idle Detection** — Monitors input inactivity via Win32 `GetLastInputInfo` with desk-break and bedtime templates.
+- **Schedules** — Cron-based recurring or one-time rules with next/last run, health status, and duplicate controls.
+- **Battery Automation** — Low and critical battery thresholds with configurable actions (Settings).
+- **Dashboard** — Next action, trigger context, active automations, battery insight, and cancel shortcut.
+- **Activity Log** — Filterable history of executed and cancelled actions.
+- **System Tray** — Minimize to tray, quick actions, optional start with Windows.
+- **Safety Warnings** — Shared warning countdown with cancel/postpone before destructive actions.
+- **Theme Support** — System, Light, or Dark theme with live switching.
 
 ## Tech Stack
 
@@ -63,6 +68,12 @@ The app runs in unpackaged mode (`<WindowsPackageType>None</WindowsPackageType>`
 
 Settings are stored in `%AppData%\ShutdownTimer\settings.json`. Schedules are stored alongside in the same directory.
 
-## License
+## Legal and security
 
-See [EULA.md](EULA.md) for the full license agreement.
+| Document | Purpose |
+|----------|---------|
+| [EULA.md](EULA.md) | End-user license for compiled releases |
+| [PRIVACY.md](PRIVACY.md) | Privacy policy (local-only data) |
+| [CHANGELOG.md](CHANGELOG.md) | Release notes |
+| [../LICENSE](../LICENSE) | Source code license (proprietary) |
+| [../SECURITY.md](../SECURITY.md) | Security policy and vulnerability reporting |

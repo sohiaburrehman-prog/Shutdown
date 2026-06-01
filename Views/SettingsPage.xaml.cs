@@ -21,7 +21,16 @@ public sealed partial class SettingsPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+        ViewModel.AllDataCleared -= OnAllDataCleared;
+        ViewModel.AllDataCleared += OnAllDataCleared;
         ViewModel.Load();
+    }
+
+    private void OnAllDataCleared()
+    {
+        App.GetService<ScheduleViewModel>().LoadSchedules();
+        App.GetService<HistoryViewModel>().Load();
+        App.GetService<CountdownTimerViewModel>().LoadPresets();
     }
 
     private async void PrivacyLink_Click(object sender, RoutedEventArgs e)

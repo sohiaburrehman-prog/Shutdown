@@ -138,6 +138,13 @@ public partial class App : Application
                     timer.Start(current + TimeSpan.FromMinutes(mins));
                 }
             }
+            else if (action == "preset" && parts.TryGetValue("minutes", out var presetMinutes)
+                     && int.TryParse(presetMinutes, out int jumpMinutes) && jumpMinutes > 0)
+            {
+                var countdown = GetService<CountdownTimerViewModel>();
+                countdown.StartQuickCountdown(jumpMinutes);
+                MainWindow?.RestoreWindow();
+            }
         }
     }
 
