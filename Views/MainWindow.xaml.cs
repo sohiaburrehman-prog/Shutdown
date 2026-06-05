@@ -49,13 +49,8 @@ public sealed partial class MainWindow : Window
         var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
         var appWindow = AppWindow.GetFromWindowId(windowId);
 
-        // Restore saved window size and position, or use defaults
-        var ws = _settingsService.Settings.Window;
-        var w = (int)(ws.Width > 100 ? ws.Width : 900);
-        var h = (int)(ws.Height > 100 ? ws.Height : 620);
-        appWindow.Resize(new Windows.Graphics.SizeInt32(w, h));
-        if (ws.X >= 0 && ws.Y >= 0)
-            appWindow.Move(new Windows.Graphics.PointInt32((int)ws.X, (int)ws.Y));
+        // Restore saved window size and position, clamped to a visible monitor
+        WindowPlacementHelper.Apply(appWindow, _settingsService.Settings.Window, persistCorrection: true, _settingsService);
 
         // Set window icon
         var icoPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Resources", "app.ico");
@@ -193,6 +188,10 @@ public sealed partial class MainWindow : Window
     public void RestoreWindow()
     {
         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
+        var appWindow = AppWindow.GetFromWindowId(windowId);
+        WindowPlacementHelper.Apply(appWindow, _settingsService.Settings.Window, persistCorrection: true, _settingsService);
+
         WindowInterop.ShowWindow(hwnd, WindowInterop.SW_RESTORE);
         WindowInterop.SetForegroundWindow(hwnd);
         this.Activate();

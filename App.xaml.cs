@@ -11,6 +11,15 @@ namespace ShutdownTimer;
 
 public partial class App : Application
 {
+    private static readonly Mutex SingleInstanceMutex;
+    private static readonly bool IsFirstInstance;
+
+    static App()
+    {
+        SingleInstanceMutex = new Mutex(true, "ShutdownTimerAdvanced_SingleInstance", out bool createdNew);
+        IsFirstInstance = createdNew;
+    }
+
     private static IServiceProvider _services = null!;
     private MainWindow _mainWindow = null!;
     private TaskbarIcon? _trayIcon;
@@ -23,11 +32,20 @@ public partial class App : Application
 
     public App()
     {
+        if (!IsFirstInstance)
+        {
+            Environment.Exit(0);
+            return;
+        }
+
         this.InitializeComponent();
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+        if (!IsFirstInstance)
+            return;
+
         try
         {
             // ── Build DI container ──────────────────────────────
@@ -70,7 +88,12 @@ public partial class App : Application
             _ = SetupJumpListAsync();
 
             // ── System tray ─────────────────────────────────────
-            try { SetupTrayIcon(); }
+            var trayReady = false;
+            try
+            {
+                SetupTrayIcon();
+                trayReady = _trayIcon != null;
+            }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[App] Tray icon failed: {ex.Message}");
@@ -93,9 +116,13 @@ public partial class App : Application
                 }
             };
 
-            if (settingsService.Settings.StartMinimized)
+            if (settingsService.Settings.StartMinimized && trayReady)
             {
                 _mainWindow.HideWindow();
+            }
+            else
+            {
+                _mainWindow.RestoreWindow();
             }
 
             ProcessActivationArguments(args);
