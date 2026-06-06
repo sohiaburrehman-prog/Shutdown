@@ -1,5 +1,12 @@
 # Shutdown Timer Advanced Changelog
 
+## Version 1.4.1
+
+- Fixed **Start minimized to tray** so it works on every launch, not only when started with `--minimized`.
+- Improved startup reliability: window placement clamping, single-instance activation, and deferred tray hide.
+- Regenerated app and tray icons programmatically to remove white-border artifacts.
+- Added `scripts/generate-icons.py` for reproducible icon builds.
+
 ## Version 1.4
 
 - Redesigned the app around a compact dashboard, clearer navigation, and stronger Shutdown Timer Advanced branding.

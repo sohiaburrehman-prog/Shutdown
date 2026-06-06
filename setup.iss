@@ -12,7 +12,7 @@
 ; ============================================================
 
 #define MyAppName "Shutdown Timer"
-#define MyAppVersion "1.4.0"
+#define MyAppVersion "1.4.1"
 #define MyAppPublisher "Sohiab"
 #define MyAppExeName "ShutdownTimer.exe"
 #define MyAppURL "https://apps.microsoft.com/detail/9NW80PKZNS4Z"
@@ -69,7 +69,7 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Registry]
 ; Optional startup entry (only if user selects the task)
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ShutdownTimerAdvanced"; ValueData: """{app}\{#MyAppExeName}"""; Flags: uninsdeletevalue; Tasks: startupentry
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ShutdownTimerAdvanced"; ValueData: """{app}\{#MyAppExeName}"" --minimized"; Flags: uninsdeletevalue; Tasks: startupentry
 
 [Code]
 function PrepareToInstall(var NeedsRestart: Boolean): String;

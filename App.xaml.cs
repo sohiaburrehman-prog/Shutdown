@@ -6,6 +6,7 @@ using ShutdownTimer.Models;
 using ShutdownTimer.Services;
 using ShutdownTimer.ViewModels;
 using ShutdownTimer.Views;
+using ShutdownTimer.Win32;
 
 namespace ShutdownTimer;
 
@@ -34,6 +35,7 @@ public partial class App : Application
     {
         if (!IsFirstInstance)
         {
+            TryActivateExistingInstance();
             Environment.Exit(0);
             return;
         }
@@ -118,7 +120,8 @@ public partial class App : Application
 
             if (settingsService.Settings.StartMinimized && trayReady)
             {
-                _mainWindow.HideWindow();
+                // Defer hide until after WinUI finishes the initial show/activate pass.
+                _mainWindow.DispatcherQueue.TryEnqueue(() => _mainWindow.HideWindow());
             }
             else
             {
@@ -196,17 +199,37 @@ public partial class App : Application
     private void SetupTrayIcon()
     {
         var exeDir = AppContext.BaseDirectory;
-        var iconPath = System.IO.Path.Combine(exeDir, "Resources", "TrayIcons", "tray.ico");
+        var trayDir = System.IO.Path.Combine(exeDir, "Resources", "TrayIcons");
+        var trayIcoPath = System.IO.Path.Combine(trayDir, "tray.ico");
+        var trayPngPath = System.IO.Path.Combine(trayDir, "tray.png");
+
+        Microsoft.UI.Xaml.Media.ImageSource trayIconSource;
+        if (System.IO.File.Exists(trayIcoPath))
+        {
+            trayIconSource = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(
+                new Uri(System.IO.Path.GetFullPath(trayIcoPath)));
+        }
+        else if (System.IO.File.Exists(trayPngPath))
+        {
+            trayIconSource = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(
+                new Uri(System.IO.Path.GetFullPath(trayPngPath)));
+        }
+        else
+        {
+            trayIconSource = new H.NotifyIcon.GeneratedIconSource
+            {
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                    Windows.UI.Color.FromArgb(255, 0, 212, 255)),
+                Text = "\uE7E8"
+            };
+        }
 
         _trayIcon = new TaskbarIcon
         {
             ToolTipText = "Shutdown Timer Advanced",
-            IconSource = new H.NotifyIcon.GeneratedIconSource
-            {
-                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.White),
-                Text = "\uE916"
-            }
+            IconSource = trayIconSource
         };
+        _trayIcon.ForceCreate();
 
         var menu = new MenuFlyout();
 
@@ -264,6 +287,23 @@ public partial class App : Application
 
     public static T GetService<T>() where T : notnull
         => _services.GetRequiredService<T>();
+
+    private static void TryActivateExistingInstance()
+    {
+        try
+        {
+            var hwnd = WindowInterop.FindWindow(null, "Shutdown Timer Advanced");
+            if (hwnd == IntPtr.Zero)
+                return;
+
+            WindowInterop.ShowWindow(hwnd, WindowInterop.SW_RESTORE);
+            WindowInterop.SetForegroundWindow(hwnd);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[App] Failed to activate existing instance: {ex.Message}");
+        }
+    }
 
     private static void LogCrash(Exception ex)
     {

@@ -92,7 +92,7 @@ echo Release build successful.
 :: Create zip (portable version)
 :: -------------------------------------------
 set BUILD_OUT=bin\%PLATFORM%\%CONFIG%\%FRAMEWORK%
-set ZIP_NAME=%APP_NAME%-v1.4.0-Portable-%PLATFORM%.zip
+set ZIP_NAME=%APP_NAME%-v1.4.1-Portable-%PLATFORM%.zip
 
 if exist "%ZIP_NAME%" del "%ZIP_NAME%"
 echo Creating portable zip: %ZIP_NAME%...
@@ -122,7 +122,7 @@ echo ========================================
 echo.
 echo  Portable zip: %ZIP_NAME%
 if defined ISCC (
-    echo  Installer:    Installer\ShutdownTimer-Setup-v1.4.0.exe
+    echo  Installer:    Installer\ShutdownTimer-Setup-v1.4.1.exe
 )
 echo.
 echo  The installer:

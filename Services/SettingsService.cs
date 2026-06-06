@@ -46,6 +46,7 @@ public class SettingsService : ISettingsService
             {
                 Settings = new AppSettings();
                 StartupRegistryHelper.MigrateLegacyEntry(GetExecutablePath());
+            StartupRegistryHelper.SyncStartupEntry(GetExecutablePath(), Settings.RunAtStartup);
                 return;
             }
 
@@ -79,6 +80,7 @@ public class SettingsService : ISettingsService
             }
 
             StartupRegistryHelper.MigrateLegacyEntry(GetExecutablePath());
+            StartupRegistryHelper.SyncStartupEntry(GetExecutablePath(), Settings.RunAtStartup);
         }
         catch (Exception ex)
         {

@@ -26,7 +26,7 @@ public static class StartupRegistryHelper
         RemoveLegacyEntries(key);
 
         if (enabled)
-            key.SetValue(ValueName, $"\"{exePath}\"");
+            key.SetValue(ValueName, $"\"{exePath}\" --minimized");
         else
             key.DeleteValue(ValueName, false);
     }
@@ -44,6 +44,30 @@ public static class StartupRegistryHelper
     /// <summary>
     /// If only the legacy key exists, rename it to the canonical value name.
     /// </summary>
+    public static void SyncStartupEntry(string? exePath, bool runAtStartup)
+    {
+        if (string.IsNullOrWhiteSpace(exePath))
+            return;
+
+        using var key = Registry.CurrentUser.OpenSubKey(KeyPath, true);
+        if (key == null)
+            return;
+
+        if (runAtStartup)
+        {
+            var expected = $"\"{exePath}\" --minimized";
+            var current = key.GetValue(ValueName) as string;
+            if (!string.Equals(current, expected, StringComparison.OrdinalIgnoreCase))
+                key.SetValue(ValueName, expected);
+        }
+        else
+        {
+            key.DeleteValue(ValueName, false);
+        }
+
+        RemoveLegacyEntries(key);
+    }
+
     public static void MigrateLegacyEntry(string? exePath)
     {
         if (string.IsNullOrWhiteSpace(exePath))

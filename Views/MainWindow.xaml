@@ -67,7 +67,7 @@
                         <TextBlock Text="ADVANCED"
                                    FontSize="9" FontWeight="SemiBold" CharacterSpacing="80"
                                    Foreground="{StaticResource AccentGlowDimBrush}" />
-                        <TextBlock Text="v1.4" FontSize="9" Foreground="{ThemeResource DimForeground}" />
+                        <TextBlock Text="v1.4.1" FontSize="9" Foreground="{ThemeResource DimForeground}" />
                     </StackPanel>
                 </StackPanel>
             </NavigationView.PaneHeader>
