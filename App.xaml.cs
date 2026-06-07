@@ -1,7 +1,9 @@
 using H.NotifyIcon;
+using H.NotifyIcon.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using ShutdownTimer.Helpers;
 using ShutdownTimer.Models;
 using ShutdownTimer.Services;
 using ShutdownTimer.ViewModels;
@@ -25,6 +27,7 @@ public partial class App : Application
     private MainWindow _mainWindow = null!;
     private TaskbarIcon? _trayIcon;
     private MiniWindow? _miniWindow;
+    private bool _trayMenuAttached;
 
     /// <summary>
     /// The main window instance, accessible for cross-page navigation.
@@ -93,8 +96,7 @@ public partial class App : Application
             var trayReady = false;
             try
             {
-                SetupTrayIcon();
-                trayReady = _trayIcon != null;
+                trayReady = EnsureTrayIcon();
             }
             catch (Exception ex)
             {
@@ -118,14 +120,26 @@ public partial class App : Application
                 }
             };
 
-            if (settingsService.Settings.StartMinimized && trayReady)
+            if (settingsService.Settings.StartMinimized)
             {
-                // Defer hide until after WinUI finishes the initial show/activate pass.
-                _mainWindow.DispatcherQueue.TryEnqueue(() => _mainWindow.HideWindow());
+                if (trayReady)
+                {
+                    _mainWindow.DispatcherQueue.TryEnqueue(async () =>
+                        await CompleteTrayStartupAsync(startMinimized: true));
+                }
+                else
+                {
+                    _mainWindow.RestoreWindow();
+                    ScheduleTrayRetry(hideWhenReady: true);
+                }
             }
             else
             {
                 _mainWindow.RestoreWindow();
+                if (trayReady)
+                    _ = TrayVisibilityHelper.EnsurePromotedAsync(TrayIconHelper.GetExecutablePath(), TimeSpan.FromSeconds(4));
+                else
+                    ScheduleTrayRetry(hideWhenReady: false);
             }
 
             ProcessActivationArguments(args);
@@ -196,40 +210,57 @@ public partial class App : Application
         await jumpList.SaveAsync();
     }
 
-    private void SetupTrayIcon()
+    private bool EnsureTrayIcon()
     {
-        var exeDir = AppContext.BaseDirectory;
-        var trayDir = System.IO.Path.Combine(exeDir, "Resources", "TrayIcons");
-        var trayIcoPath = System.IO.Path.Combine(trayDir, "tray.ico");
-        var trayPngPath = System.IO.Path.Combine(trayDir, "tray.png");
+        if (_trayIcon?.IsCreated == true)
+            return true;
 
-        Microsoft.UI.Xaml.Media.ImageSource trayIconSource;
-        if (System.IO.File.Exists(trayIcoPath))
-        {
-            trayIconSource = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(
-                new Uri(System.IO.Path.GetFullPath(trayIcoPath)));
-        }
-        else if (System.IO.File.Exists(trayPngPath))
-        {
-            trayIconSource = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(
-                new Uri(System.IO.Path.GetFullPath(trayPngPath)));
-        }
-        else
-        {
-            trayIconSource = new H.NotifyIcon.GeneratedIconSource
-            {
-                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                    Windows.UI.Color.FromArgb(255, 0, 212, 255)),
-                Text = "\uE7E8"
-            };
-        }
+        _trayIcon?.Dispose();
+        _trayMenuAttached = false;
 
         _trayIcon = new TaskbarIcon
         {
             ToolTipText = "Shutdown Timer Advanced",
-            IconSource = trayIconSource
+            IconSource = TrayIconHelper.CreateFallbackIconSource(),
         };
-        _trayIcon.ForceCreate();
+
+        _trayIcon.ForceCreate(enablesEfficiencyMode: false);
+
+        if (!_trayIcon.IsCreated)
+            return false;
+
+        if (!TrayIconHelper.TryApplyNativeIcon(_trayIcon))
+            TrayIconHelper.TryApplyFileIcon(_trayIcon, TrayIconHelper.GetTrayIcoPath());
+
+        _trayIcon.TrayIcon?.UpdateVisibility(IconVisibility.Visible);
+
+        AttachTrayMenu();
+        return true;
+    }
+
+    private async Task CompleteTrayStartupAsync(bool startMinimized)
+    {
+        var exePath = TrayIconHelper.GetExecutablePath();
+        var promoted = await TrayVisibilityHelper.EnsurePromotedAsync(exePath, TimeSpan.FromSeconds(8));
+
+        if (startMinimized && promoted)
+        {
+            _mainWindow.HideWindow();
+            NotifyTrayPresence();
+            return;
+        }
+
+        if (startMinimized)
+        {
+            _mainWindow.RestoreWindow();
+            await ShowTraySetupDialogAsync();
+        }
+    }
+
+    private void AttachTrayMenu()
+    {
+        if (_trayIcon == null || _trayMenuAttached)
+            return;
 
         var menu = new MenuFlyout();
 
@@ -237,14 +268,12 @@ public partial class App : Application
         showItem.Click += (_, _) => _mainWindow.RestoreWindow();
         menu.Items.Add(showItem);
 
-        // Mini mode option
         var miniItem = new MenuFlyoutItem { Text = "Mini Timer" };
         miniItem.Click += (_, _) => ShowMiniWindow();
         menu.Items.Add(miniItem);
 
         menu.Items.Add(new MenuFlyoutSeparator());
 
-        // Quick actions (including Lock)
         foreach (var action in Enum.GetValues<TimerAction>())
         {
             var item = new MenuFlyoutItem { Text = $"Quick {action}" };
@@ -271,6 +300,78 @@ public partial class App : Application
 
         _trayIcon.ContextFlyout = menu;
         _trayIcon.LeftClickCommand = new SimpleRelayCommand(() => _mainWindow.RestoreWindow());
+        _trayMenuAttached = true;
+    }
+
+    private void ScheduleTrayRetry(bool hideWhenReady)
+    {
+        var attempts = 0;
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        timer.Tick += (_, _) =>
+        {
+            attempts++;
+            if (attempts > 5)
+            {
+                timer.Stop();
+                return;
+            }
+
+            if (!EnsureTrayIcon())
+                return;
+
+            timer.Stop();
+            if (hideWhenReady)
+                _ = CompleteTrayStartupAsync(startMinimized: true);
+        };
+        timer.Start();
+    }
+
+    private async Task ShowTraySetupDialogAsync()
+    {
+        try
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Turn on the tray icon",
+                Content =
+                    "Windows 11 hides new tray icons until you enable them.\n\n" +
+                    "Open Settings → Personalization → Taskbar → Other system tray icons, " +
+                    "then switch Shutdown Timer Advanced to On.\n\n" +
+                    "The app will keep running either way — use the window below until the icon appears.",
+                PrimaryButtonText = "Open Taskbar settings",
+                CloseButtonText = "OK",
+                DefaultButton = ContentDialogButton.Primary,
+                XamlRoot = _mainWindow.Content.XamlRoot,
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("ms-settings:taskbar")
+                {
+                    UseShellExecute = true,
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[App] Tray setup dialog failed: {ex.Message}");
+        }
+    }
+
+    private void NotifyTrayPresence()
+    {
+        try
+        {
+            _trayIcon?.ShowNotification(
+                "Shutdown Timer Advanced",
+                "Running in the notification area near the clock. Left-click the cyan power icon to open.",
+                NotificationIcon.Info);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[App] Tray notification failed: {ex.Message}");
+        }
     }
 
     private void ShowMiniWindow()

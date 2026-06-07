@@ -18,11 +18,7 @@ CYAN_DIM = (0, 96, 128)
 ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
 
 
-def render_icon(size: int) -> Image.Image:
-    """Draw a crisp power/timer icon on an opaque dark square."""
-    img = Image.new("RGB", (size, size), BG_RGB)
-    draw = ImageDraw.Draw(img)
-
+def _draw_glyph(draw: ImageDraw.ImageDraw, size: int) -> None:
     cx = cy = size // 2
     radius = int(size * 0.27)
     stroke = max(2, round(size * 0.075))
@@ -44,6 +40,18 @@ def render_icon(size: int) -> Image.Image:
     stem_bottom = cy - int(radius * 0.08)
     draw.line([cx, stem_top, cx, stem_bottom], fill=CYAN, width=stroke)
 
+
+def render_icon(size: int) -> Image.Image:
+    """Draw a crisp power/timer icon on an opaque dark square."""
+    img = Image.new("RGB", (size, size), BG_RGB)
+    _draw_glyph(ImageDraw.Draw(img), size)
+    return img
+
+
+def render_tray_icon(size: int) -> Image.Image:
+    """Tray icon with transparent background so it stays visible on the taskbar."""
+    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    _draw_glyph(ImageDraw.Draw(img), size)
     return img
 
 
@@ -51,15 +59,16 @@ def to_rgba(img: Image.Image) -> Image.Image:
     return img.convert("RGBA")
 
 
-def save_png(path: Path, size: int) -> None:
+def save_png(path: Path, size: int, *, tray: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    render_icon(size).save(path, format="PNG", optimize=True)
+    image = render_tray_icon(size) if tray else render_icon(size)
+    image.save(path, format="PNG", optimize=True)
 
 
-def save_ico(path: Path, sizes: list[int]) -> None:
+def save_ico(path: Path, sizes: list[int], *, tray: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     largest = max(sizes)
-    master = render_icon(largest)
+    master = render_tray_icon(largest) if tray else render_icon(largest)
     master.save(
         path,
         format="ICO",
@@ -100,8 +109,8 @@ def main() -> None:
 
     save_ico(resources / "app.ico", ICO_SIZES)
     save_png(resources / "logo48.png", 48)
-    save_ico(tray_dir / "tray.ico", [16, 24, 32, 48])
-    save_png(tray_dir / "tray.png", 32)
+    save_ico(tray_dir / "tray.ico", [16, 24, 32, 48], tray=True)
+    save_png(tray_dir / "tray.png", 32, tray=True)
 
     write_scaled_square(assets, "Square44x44Logo", 44, [100, 125, 150, 200, 400])
     write_scaled_square(assets, "Square150x150Logo", 150, [100, 125, 150, 200, 400])
