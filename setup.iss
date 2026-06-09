@@ -12,7 +12,7 @@
 ; ============================================================
 
 #define MyAppName "Shutdown Timer"
-#define MyAppVersion "1.4.1"
+#define MyAppVersion "1.4.2"
 #define MyAppPublisher "Sohiab"
 #define MyAppExeName "ShutdownTimer.exe"
 #define MyAppURL "https://apps.microsoft.com/detail/9NW80PKZNS4Z"

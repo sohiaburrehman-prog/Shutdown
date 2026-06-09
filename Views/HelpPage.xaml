@@ -204,7 +204,7 @@
             </Border>
 
             <!-- Version footer -->
-            <TextBlock Text="Shutdown Timer Advanced v1.4.1  -  Developer: Sohiab"
+            <TextBlock Text="Shutdown Timer Advanced v1.4.2  -  Developer: Sohiab"
                        FontSize="11" Foreground="{ThemeResource DimForeground}" Margin="0,4,0,12" />
 
         </StackPanel>

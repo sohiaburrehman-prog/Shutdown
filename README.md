@@ -5,6 +5,7 @@ A modern Windows power-management utility built with **WinUI 3** and **.NET 9**.
 [![Microsoft Store](https://img.shields.io/badge/Microsoft%20Store-Get%20app-0078D4?logo=microsoft)](https://apps.microsoft.com/detail/9NW80PKZNS4Z)
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)](https://github.com/sohiaburrehman-prog/Shutdown)
+[![License](https://img.shields.io/badge/license-Proprietary-red)](LICENSE)
 
 ## Features
 
@@ -109,3 +110,7 @@ The Microsoft Store package identity may display **Providence** as the publisher
 ## Contributing
 
 This is proprietary software. Public issue reports for bugs and feature requests are welcome; pull requests may not be accepted unless agreed in advance. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+- [Report a bug](https://github.com/sohiaburrehman-prog/Shutdown/issues/new?template=bug_report.yml)
+- [Request a feature](https://github.com/sohiaburrehman-prog/Shutdown/issues/new?template=feature_request.yml)
+- [Ask a question](https://github.com/sohiaburrehman-prog/Shutdown/discussions)

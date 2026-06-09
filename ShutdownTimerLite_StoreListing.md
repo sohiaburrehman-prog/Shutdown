@@ -103,8 +103,6 @@ File managers  (or "Productivity" if available — pick whichever fits best from
 ## Privacy Policy URL
 
 ```
-TODO — Replace with your hosted privacy policy URL before publishing publicly.
-For tester flight this can be left blank or use a placeholder like:
 https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
 ```
 
@@ -117,7 +115,7 @@ sohiab.rehman@pm.me
 ## Website
 
 ```
-(leave blank or use GitHub repo URL)
+https://github.com/sohiaburrehman-prog/Shutdown
 ```
 
 ---

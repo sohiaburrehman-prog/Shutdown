@@ -1,5 +1,12 @@
 # Shutdown Timer Advanced Changelog
 
+## Version 1.4.2
+
+- Fixed Windows 11 tray icons staying hidden after the startup notification (auto-promotes `NotifyIconSettings`).
+- Added a high-contrast native tray icon and a setup dialog with a link to Taskbar settings when Windows blocks the icon.
+- Updated public contact email to sohiab.rehman@pm.me.
+- Published source repository publicly on GitHub.
+
 ## Version 1.4.1
 
 - Fixed **Start minimized to tray** so it works on every launch, not only when started with `--minimized`.

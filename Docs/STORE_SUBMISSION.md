@@ -19,23 +19,17 @@
 
 ### Privacy Policy URL
 
-The Microsoft Store requires a Privacy Policy URL when submitting. Options:
+The Microsoft Store requires a Privacy Policy URL when submitting.
 
-1. **GitHub Pages (free, recommended):**
-   - Create a GitHub repo (e.g., `sohiab/shutdown-timer-privacy`)
-   - Add PRIVACY.md as index.md
-   - Enable GitHub Pages in repo Settings
-   - URL will be: `https://sohiab.github.io/shutdown-timer-privacy/`
+**Canonical URL (public repo):**
 
-2. **Simple HTML page on any host:**
-   - Convert PRIVACY.md to HTML
-   - Host on any web server or free hosting (Netlify, Vercel, etc.)
+```text
+https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
+```
 
-3. **Direct link to a GitHub file:**
-   - Less professional but acceptable
-   - e.g., `https://github.com/sohiab/shutdown-timer/blob/main/PRIVACY.md`
+Use the **same URL** for both the Pro and Lite store listings.
 
-Use the SAME URL for both the Pro and Lite store listings.
+Optional later upgrade: host `Docs/PRIVACY.md` on GitHub Pages for a cleaner standalone page.
 
 ### Store Data Disclosure
 
@@ -79,8 +73,8 @@ Features:
 Privacy: This app collects no personal data whatsoever. All settings are
 stored locally on your device. No analytics, no telemetry, no ads.
 
-**Privacy policy URL:** [Your hosted privacy policy URL]
-**Website:** [Optional]
+**Privacy policy URL:** https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
+**Website:** https://github.com/sohiaburrehman-prog/Shutdown
 **Support contact:** sohiab.rehman@pm.me
 
 ---
@@ -111,8 +105,8 @@ No bloat, no ads, no data collection. Just a timer that does what it says.
 Want more features? Upgrade to Shutdown Timer Pro for process monitoring,
 idle detection, scheduling, system tray integration, and more.
 
-**Privacy policy URL:** [Same URL as Pro]
-**Website:** [Optional]
+**Privacy policy URL:** https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
+**Website:** https://github.com/sohiaburrehman-prog/Shutdown
 **Support contact:** sohiab.rehman@pm.me
 
 ---

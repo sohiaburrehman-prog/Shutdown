@@ -21,7 +21,7 @@ This will:
 3. Create the MSIX package
 4. Sign it with the certificate
 
-The output file will be: `ShutdownTimer_1.4.1.0_x64.msix`
+The output file will be: `ShutdownTimer_1.4.2.0_x64.msix`
 
 ## Installing Locally
 

@@ -232,7 +232,7 @@
             <Border Style="{StaticResource GlassCard}" Opacity="0.7">
                 <StackPanel Spacing="8">
                     <TextBlock Text="ABOUT" Style="{StaticResource SectionTitle}" />
-                    <TextBlock Text="Shutdown Timer Advanced v1.4.1" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
+                    <TextBlock Text="Shutdown Timer Advanced v1.4.2" FontWeight="SemiBold" Foreground="{ThemeResource PageTitleForeground}" />
                     <TextBlock Text="Built with WinUI 3 / .NET 9" FontSize="12"
                                Foreground="{ThemeResource DimForeground}" />
                     <TextBlock FontSize="12" Foreground="{ThemeResource DimForeground}" Margin="0,4,0,0"

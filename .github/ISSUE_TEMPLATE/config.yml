@@ -1,8 +1,14 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Questions & help
+    url: https://github.com/sohiaburrehman-prog/Shutdown/discussions
+    about: Ask usage questions or share feedback in Discussions
   - name: Security vulnerability
     url: https://github.com/sohiaburrehman-prog/Shutdown/blob/main/SECURITY.md
     about: Report security issues privately — do not open public issues
   - name: Microsoft Store listing
     url: https://apps.microsoft.com/detail/9NW80PKZNS4Z
     about: Download or review the app on the Microsoft Store
+  - name: Privacy policy
+    url: https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
+    about: Read the privacy policy
