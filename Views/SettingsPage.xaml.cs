@@ -48,7 +48,7 @@ public sealed partial class SettingsPage : Page
                 Content = "This app does not collect, transmit, or store any personal data. " +
                           "All settings are stored locally on your device. " +
                           "No analytics, telemetry, or usage data is sent anywhere.\n\n" +
-                          "Developer: Sohiab\nContact: sohiab@outlook.com",
+                          "Developer: Sohiab\nContact: sohiab.rehman@pm.me",
                 CloseButtonText = "OK",
                 XamlRoot = this.XamlRoot
             };

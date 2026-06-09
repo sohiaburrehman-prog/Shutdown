@@ -15,7 +15,7 @@ Security fixes are provided for the latest released version available on the [Mi
 
 Instead, report them privately to:
 
-- **Email:** sohiab@outlook.com
+- **Email:** sohiab.rehman@pm.me
 - **Subject:** `[Shutdown Timer Security]`
 
 Include:

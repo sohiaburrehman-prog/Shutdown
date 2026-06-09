@@ -111,7 +111,7 @@ https://github.com/sohiaburrehman-prog/Shutdown/blob/main/Docs/PRIVACY.md
 ## Support Contact
 
 ```
-sohiab@outlook.com
+sohiab.rehman@pm.me
 ```
 
 ## Website

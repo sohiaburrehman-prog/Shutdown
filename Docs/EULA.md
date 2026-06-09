@@ -78,7 +78,7 @@ This Agreement constitutes the entire agreement between the parties with respect
 For questions regarding this EULA, please contact:
 
 - **Developer:** Sohiab
-- **Email:** sohiab@outlook.com
+- **Email:** sohiab.rehman@pm.me
 - **Via:** Microsoft Store listing or application support channels
 
 ---

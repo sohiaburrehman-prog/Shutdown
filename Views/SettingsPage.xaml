@@ -237,8 +237,8 @@
                                Foreground="{ThemeResource DimForeground}" />
                     <TextBlock FontSize="12" Foreground="{ThemeResource DimForeground}" Margin="0,4,0,0"
                                Text="Developer: Sohiab" />
-                    <HyperlinkButton Content="sohiab@outlook.com"
-                                     NavigateUri="mailto:sohiab@outlook.com"
+                    <HyperlinkButton Content="sohiab.rehman@pm.me"
+                                     NavigateUri="mailto:sohiab.rehman@pm.me"
                                      FontSize="12" Padding="0" />
                 </StackPanel>
             </Border>

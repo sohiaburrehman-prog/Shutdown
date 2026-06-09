@@ -81,7 +81,7 @@ stored locally on your device. No analytics, no telemetry, no ads.
 
 **Privacy policy URL:** [Your hosted privacy policy URL]
 **Website:** [Optional]
-**Support contact:** sohiab@outlook.com
+**Support contact:** sohiab.rehman@pm.me
 
 ---
 
@@ -113,7 +113,7 @@ idle detection, scheduling, system tray integration, and more.
 
 **Privacy policy URL:** [Same URL as Pro]
 **Website:** [Optional]
-**Support contact:** sohiab@outlook.com
+**Support contact:** sohiab.rehman@pm.me
 
 ---
 

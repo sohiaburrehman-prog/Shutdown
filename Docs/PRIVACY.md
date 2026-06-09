@@ -85,7 +85,7 @@ The Software does not knowingly collect any personal information from anyone, in
 For the purposes of applicable data protection law, the data controller is:
 
 - **Name:** Sohiab
-- **Contact:** sohiab@outlook.com
+- **Contact:** sohiab.rehman@pm.me
 
 Since the Software does not collect or process any personal data, no data processing activities are carried out, and no data controller obligations relating to data processing apply in practice.
 
@@ -116,7 +116,7 @@ If this Privacy Policy is updated, the revised version will be made available th
 For questions or concerns about this Privacy Policy, please contact:
 
 - **Developer:** Sohiab
-- **Email:** sohiab@outlook.com
+- **Email:** sohiab.rehman@pm.me
 - **Via:** Microsoft Store listing or application support channels
 
 ---

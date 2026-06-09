@@ -20,7 +20,7 @@ Open a [GitHub Issue](https://github.com/sohiaburrehman-prog/Shutdown/issues) wi
 
 ### Security issues
 
-Do **not** open public issues for security vulnerabilities. Email **sohiab@outlook.com** with subject `[Shutdown Timer Security]`. See [SECURITY.md](SECURITY.md).
+Do **not** open public issues for security vulnerabilities. Email **sohiab.rehman@pm.me** with subject `[Shutdown Timer Security]`. See [SECURITY.md](SECURITY.md).
 
 ### Pull requests
 

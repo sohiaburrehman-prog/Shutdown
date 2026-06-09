@@ -103,7 +103,7 @@ The Microsoft Store package identity may display **Providence** as the publisher
 ## Contact
 
 - **Developer:** Sohiab
-- **Email:** sohiab@outlook.com
+- **Email:** sohiab.rehman@pm.me
 - **Store:** [Shutdown Timer Advanced on Microsoft Store](https://apps.microsoft.com/detail/9NW80PKZNS4Z)
 
 ## Contributing
