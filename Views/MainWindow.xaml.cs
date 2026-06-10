@@ -16,6 +16,7 @@ public sealed partial class MainWindow : Window
 {
     private readonly ISettingsService _settingsService;
     private readonly ISystemActionService? _actionService;
+    private bool _forceShutdown;
 
     public MainViewModel ViewModel { get; } = App.GetService<MainViewModel>();
 
@@ -147,7 +148,7 @@ public sealed partial class MainWindow : Window
 
     private void OnWindowClosed(object sender, WindowEventArgs args)
     {
-        if (_settingsService.Settings.MinimizeToTrayOnClose)
+        if (!_forceShutdown && _settingsService.Settings.MinimizeToTrayOnClose)
         {
             args.Handled = true;
             HideWindow();
@@ -155,6 +156,16 @@ public sealed partial class MainWindow : Window
         }
 
         SaveWindowState();
+    }
+
+    /// <summary>
+    /// Closes the app for real, bypassing minimize-to-tray.
+    /// </summary>
+    public void ShutdownApplication()
+    {
+        _forceShutdown = true;
+        SaveWindowState();
+        Close();
     }
 
     private void SaveWindowState()

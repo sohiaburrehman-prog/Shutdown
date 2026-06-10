@@ -3,6 +3,7 @@ using H.NotifyIcon.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using ShutdownTimer.Helpers;
 using ShutdownTimer.Models;
 using ShutdownTimer.Services;
@@ -264,43 +265,73 @@ public partial class App : Application
 
         var menu = new MenuFlyout();
 
-        var showItem = new MenuFlyoutItem { Text = "Show Window" };
-        showItem.Click += (_, _) => _mainWindow.RestoreWindow();
-        menu.Items.Add(showItem);
-
-        var miniItem = new MenuFlyoutItem { Text = "Mini Timer" };
-        miniItem.Click += (_, _) => ShowMiniWindow();
-        menu.Items.Add(miniItem);
+        menu.Items.Add(CreateTrayMenuItem("Show Window", () => _mainWindow.RestoreWindow()));
+        menu.Items.Add(CreateTrayMenuItem("Mini Timer", ShowMiniWindow));
 
         menu.Items.Add(new MenuFlyoutSeparator());
 
         foreach (var action in Enum.GetValues<TimerAction>())
         {
-            var item = new MenuFlyoutItem { Text = $"Quick {action}" };
             var capturedAction = action;
-            item.Click += (_, _) =>
+            menu.Items.Add(CreateTrayMenuItem($"Quick {action}", () =>
             {
                 var svc = GetService<ISystemActionService>();
                 svc.ExecuteWithWarning(capturedAction, "Tray Quick Action", $"Tray: Quick {capturedAction}");
-            };
-            menu.Items.Add(item);
+            }));
         }
 
         menu.Items.Add(new MenuFlyoutSeparator());
-
-        var exitItem = new MenuFlyoutItem { Text = "Exit" };
-        exitItem.Click += (_, _) =>
-        {
-            _trayIcon?.Dispose();
-            _miniWindow?.Close();
-            _mainWindow.Close();
-            Environment.Exit(0);
-        };
-        menu.Items.Add(exitItem);
+        menu.Items.Add(CreateTrayMenuItem("Exit", ExitApplication));
 
         _trayIcon.ContextFlyout = menu;
         _trayIcon.LeftClickCommand = new SimpleRelayCommand(() => _mainWindow.RestoreWindow());
         _trayMenuAttached = true;
+    }
+
+    /// <summary>
+    /// H.NotifyIcon builds a Win32 popup menu that invokes MenuFlyoutItem.Command, not Click.
+    /// </summary>
+    private MenuFlyoutItem CreateTrayMenuItem(string text, Action action)
+    {
+        var command = new XamlUICommand();
+        command.ExecuteRequested += (_, _) =>
+            _mainWindow.DispatcherQueue.TryEnqueue(() => action());
+
+        return new MenuFlyoutItem
+        {
+            Text = text,
+            Command = command,
+        };
+    }
+
+    private void ExitApplication()
+    {
+        try
+        {
+            GetService<IScheduleService>().Stop();
+            GetService<IBatteryAutomationService>().Stop();
+            GetService<IProcessMonitorService>().StopMonitoring();
+            GetService<IIdleDetectionService>().StopMonitoring();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[App] Shutdown service stop failed: {ex.Message}");
+        }
+
+        try
+        {
+            _miniWindow?.Close();
+            _miniWindow = null;
+        }
+        catch { }
+
+        _trayIcon?.Dispose();
+        _trayIcon = null;
+
+        _mainWindow.ShutdownApplication();
+
+        // WinUI may keep running after Close when minimize-to-tray was enabled.
+        Environment.Exit(0);
     }
 
     private void ScheduleTrayRetry(bool hideWhenReady)

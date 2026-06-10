@@ -10,7 +10,7 @@
   <Identity
     Name="Providence.ShutdownTimerAdvanced"
     Publisher="CN=116CD0F6-5DF7-44AD-AF85-9292D7187F2F"
-    Version="1.4.2.0"
+    Version="1.4.3.0"
     ProcessorArchitecture="x64" />
 
   <mp:PhoneIdentity PhoneProductId="e1f5e3a0-4c5b-4a8f-9d2e-8b6f3c1d0e5f"

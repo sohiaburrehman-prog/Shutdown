@@ -1,5 +1,10 @@
 # Shutdown Timer Advanced Changelog
 
+## Version 1.4.3
+
+- Fixed tray **Exit** (and other tray menu actions) not firing — H.NotifyIcon requires `Command`, not `Click`.
+- Fixed Exit only hiding the window when minimize-to-tray is enabled; the app now shuts down fully.
+
 ## Version 1.4.2
 
 - Fixed Windows 11 tray icons staying hidden after the startup notification (auto-promotes `NotifyIconSettings`).
